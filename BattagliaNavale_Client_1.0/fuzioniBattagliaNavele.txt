@@ -1,0 +1,30 @@
+controllo schermata:
+	-client invia: 
+	
+	-server invia ai client "1" quando entrambi i giocatori sono connessi
+
+posizionamento navi:
+	-client invia: 
+	
+	-server invia 1 se la nave è stata pozionata in modo corretto dentro al campo, senza sovrapposzioni e 
+	 senza stare troppo vicino alle altre navi, 2 se la nave non è stata posizonata in modo corretto dentro il 
+	 campo
+
+controllo coordinate sparo:
+	-client invia:
+
+	-server invia al client 1 se lo sparo è stato fatto in una casella gia fatta, quindi lo sparo è da rifare
+	 invia invece 2 se lo sparo va bene 
+
+coordinate sparo:
+	-client invia:
+
+	-server invia al client due numeri separati da ; ad esempio "5;3". il primo numero indica la casella delle x
+ 	 dove l'altro client ha sparato, mentre il secondo numero indica la casella delle y
+
+controllo vinto: 
+	-client invia:
+
+	-server invia al client 1 se il giocatore a vinto, 2 se il giocatore nessun giocatore non ha ancora vinto,
+	 3 se il giocatore ha perso
+
