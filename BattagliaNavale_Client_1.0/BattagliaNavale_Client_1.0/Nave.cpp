@@ -95,19 +95,40 @@ Nave Nave::creaNave(int larghezza, int altezza, int x, int y) {
     //navi.push_back(nave);
     return nave;
 }
-void Nave::riempiVettoreTestoNave(std::vector<std::string>& vet)
+
+Nave Nave::creaNave(int i)
 {
-    vet.push_back("INSERIRE UNA PORTAEREI"); //7
-    vet.push_back("INSERIRE UNA CORAZZATA"); //4
-    vet.push_back("INSERIRE UNA SOTTOMARINO"); //3
-    vet.push_back("INSERIRE UNA CORVETTA"); //2
-    vet.push_back("INSERIRE UNA LANCIA"); //1
-    vet.push_back("INSERIRE UNA LANCIA"); //1
-}
-void Nave::riempiVettoreNaviTemporanee(std::vector<Nave> navi)
-{
-    for (int i = 0; i < 6; i++) {
-        Nave n(0, 0);
-        navi.push_back(n);  // Aggiungi un elemento a navi
+
+    if (i == 0) { // se è portaerei
+        Nave nave(0, 0); // Corazzata iniziale in verticale
+        nave = Nave::creaNave(70, 490, 600, 100);
+        nave.setOrientamento(false);
+        return nave;
     }
+    if (i == 1) { // se è corazzata
+        Nave nave(0, 0); // Corazzata iniziale in verticale
+        nave = Nave::creaNave(70, 280, 600, 100);
+        nave.setOrientamento(false);
+        return nave;
+    }
+    if (i == 2) { // se è sottomarino
+        Nave nave(0, 0); // Corazzata iniziale in verticale
+        nave = Nave::creaNave(70, 210, 600, 100);
+        nave.setOrientamento(false);
+        return nave;
+    }
+    if (i == 3) { // se è corvetta
+        Nave nave(0, 0); // Corazzata iniziale in verticale
+        nave = Nave::creaNave(70, 140, 600, 100);
+        nave.setOrientamento(false);
+        return nave;
+    }
+    if (i == 4 || i == 5) { // se è lancia
+        Nave nave(0, 0); // Corazzata iniziale in verticale
+        nave = Nave::creaNave(70, 70, 600, 100);
+        nave.setOrientamento(false);
+        return nave;
+    }
+    Nave nave;
+    return nave;
 }

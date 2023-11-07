@@ -1,7 +1,7 @@
 #pragma once
 #include "DisegnaContenuti.h"
 
-void DisegnaContenuti::scriviScritta(std::string str) {
+void DisegnaContenuti::scriviScritta(std::string str, SDL_Renderer* gRenderer) {
     TTF_Font* font = TTF_OpenFont("font/EaJdz.ttf", 200);
     if (!font) return;
     // Creazione di una superficie di testo:
@@ -16,7 +16,7 @@ void DisegnaContenuti::scriviScritta(std::string str) {
     }
 
     // Creazione di una texture dal testo:
-    SDL_Texture* textureTesto = SDL_CreateTextureFromSurface(Campo::gRenderer, superficieTesto);
+    SDL_Texture* textureTesto = SDL_CreateTextureFromSurface(gRenderer, superficieTesto);
 
     if (!textureTesto) {
         // Gestione degli errori nel caso in cui la texture non venga creata correttamente
@@ -28,7 +28,7 @@ void DisegnaContenuti::scriviScritta(std::string str) {
 
     // Renderizzazione del testo:
     SDL_Rect posizione = { 600, 10, superficieTesto->w / 4, superficieTesto->h / 3 };
-    SDL_RenderCopy(Campo::gRenderer, textureTesto, NULL, &posizione);
+    SDL_RenderCopy(gRenderer, textureTesto, NULL, &posizione);
 
     // Pulizia delle risorse:
     SDL_DestroyTexture(textureTesto);
