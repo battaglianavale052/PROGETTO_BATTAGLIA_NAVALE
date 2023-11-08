@@ -21,14 +21,20 @@ int main(int argc, char* args[]) {
     std::vector<std::string> testiNave; //contiene il testo delle navi
     DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv;InterazioniUtente Cinu; SchermataIniziale Csi;//oggetti di varie classi che verranno usate
     
+   
     //SCHERMATA INZIALE
-    Csi.disegnaSfondo(Campo::gRenderer, "img/sfondoInizio.jpg", Campo::gWindow);
+    Cc.coloraFinestraDiNero(Cc.gRenderer);
+    Csi.disegnaSfondo(Campo::gRenderer, "img/1.jpg", Campo::gWindow);
+    Cdc.disegnaBottone(Cc.gRenderer, "img/2.bmp", Cc.SCREEN_WIDTH / 2 - 70, 400, 200, 200);
+    Cdc.scriviScritta("BATTAGLIA NAVALE", Cc.gRenderer, 400, 30, 300);SDL_RenderPresent(Cc.gRenderer);
+    while (Cdc.controlloClickBottone(680, 1080, 400, 600, 1) != 1){}
 
 
     //INIZIO GIOCO
     Cnv.riempiVettoreTestoNave(testiNave); //riempio il vettore di testi delle navi
     Cnv.riempiVettoreNaviTemporanee(navi); //servirà per modifiche future
     SDL_Texture* mareTexture = Ctx.CaricaTextureMare("img/mare.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
+
     for (int i = 0; i < 6; i++) { //ciclo per ogni nave per permettere di posizionare nave sul campo
 
         //CREA CAMPO, BOTTONI e SCRITTA
@@ -36,13 +42,13 @@ int main(int argc, char* args[]) {
         Cc.visualizzaCampo(mareTexture, navi);
         Cdc.disegnaBottone(Cc.gRenderer, "img/ruota.bmp", 1100, 150, 200, 200);
         Cdc.disegnaBottone(Cc.gRenderer, "img/salva.bmp", 1100, 350, 200, 200);
-        Cdc.scriviScritta(testiNave[i], Cc.gRenderer);
+        Cdc.scriviScritta(testiNave[i], Cc.gRenderer, 600, 10, 200);
 
         Nave nave = Cn.creaNave(i); //creo la nave in base a i
         navi.push_back(nave);
         //Cnv.visualizzaVettore(navi, Cc.gRenderer);
         for (int l = 0; l < i + 1; l++) {
-            Texture::disegnaTextureNave(l, &navi[l], navi[l].getX(), navi[l].getY(), Cc.gRenderer); //disegna la texture della nave sulla nave  
+            Ctx.disegnaTextureNave(l, &navi[l], navi[l].getX(), navi[l].getY(), Cc.gRenderer); //disegna la texture della nave sulla nave  
             SDL_RenderPresent(Cc.gRenderer);
         }
 
@@ -70,7 +76,7 @@ int main(int argc, char* args[]) {
                 Cc.visualizzaCampo(mareTexture, navi);
                 Cdc.disegnaBottone(Cc.gRenderer, "img/ruota.bmp", 1100, 150, 200, 200);
                 Cdc.disegnaBottone(Cc.gRenderer, "img/salva.bmp", 1100, 350, 200, 200);
-                Cdc.scriviScritta(testiNave[i], Cc.gRenderer);
+                Cdc.scriviScritta(testiNave[i], Cc.gRenderer, 600, 10, 200);
                 //Cnv.visualizzaVettore(navi, Cc.gRenderer);
                 for (int l = 0; l < i + 1; l++) {
                     Texture::disegnaTextureNave(l ,&navi[l], navi[l].getX(), navi[l].getY(), Cc.gRenderer); //disegna la texture della nave sulla nave  

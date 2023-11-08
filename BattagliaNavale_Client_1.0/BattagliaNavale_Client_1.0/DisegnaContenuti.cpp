@@ -1,11 +1,11 @@
 #pragma once
 #include "DisegnaContenuti.h"
 
-void DisegnaContenuti::scriviScritta(std::string str, SDL_Renderer* gRenderer) {
-    TTF_Font* font = TTF_OpenFont("font/EaJdz.ttf", 200);
+void DisegnaContenuti::scriviScritta(std::string str, SDL_Renderer* gRenderer, int x, int y, int grandezza) {
+    TTF_Font* font = TTF_OpenFont("font/EaJdz.ttf", grandezza);
     if (!font) return;
     // Creazione di una superficie di testo:
-    SDL_Color coloreTesto = { 65, 125, 189 };
+    SDL_Color coloreTesto = { 45, 129, 200 };
     SDL_Surface* superficieTesto = TTF_RenderText_Solid(font, str.c_str(), coloreTesto);
 
     if (!superficieTesto) {
@@ -27,7 +27,7 @@ void DisegnaContenuti::scriviScritta(std::string str, SDL_Renderer* gRenderer) {
     }
 
     // Renderizzazione del testo:
-    SDL_Rect posizione = { 600, 10, superficieTesto->w / 4, superficieTesto->h / 3 };
+    SDL_Rect posizione = { x, y, superficieTesto->w / 4, superficieTesto->h / 3 };
     SDL_RenderCopy(gRenderer, textureTesto, NULL, &posizione);
 
     // Pulizia delle risorse:
@@ -81,6 +81,28 @@ int DisegnaContenuti::controlloClickBottone(int x, int x1, int y, int y1, int va
                 if (mouseX >= x_ && mouseX <= x1_) {
                     if (mouseY >= y_ && mouseY <= y1_) {
                         return var_;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int DisegnaContenuti::controlloClickBottone(int x, int x1, int y, int y1, int var) {
+    SDL_Event e;
+    int mouseX, mouseY; // Dichiarare queste variabili per memorizzare le coordinate del clic
+
+    while (SDL_PollEvent(&e) != 0) {
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.button.button == SDL_BUTTON_LEFT) {
+                mouseX = e.button.x; // Coordinate X del clic
+                mouseY = e.button.y; // Coordinate Y del clic
+                // Ora puoi utilizzare mouseX e mouseY per determinare dove ha cliccato l'utente.
+
+                if (mouseX >= x && mouseX <= x1) {
+                    if (mouseY >= y && mouseY <= y1) {
+                        return var;
                     }
                 }
             }

@@ -39,6 +39,9 @@
     <ClCompile Include="InterazioniUtente.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="ClientServerComunicazione.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Campo.h">
@@ -63,6 +66,9 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="InterazioniUtente.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientServerComunicazione.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>

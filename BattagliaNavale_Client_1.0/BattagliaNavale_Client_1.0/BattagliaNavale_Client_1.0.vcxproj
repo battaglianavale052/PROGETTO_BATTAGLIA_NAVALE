@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Campo.cpp" />
+    <ClCompile Include="ClientServerComunicazione.cpp" />
     <ClCompile Include="DisegnaContenuti.cpp" />
     <ClCompile Include="InterazioniUtente.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Downloads\SDL_image.h" />
     <ClInclude Include="Campo.h" />
+    <ClInclude Include="ClientServerComunicazione.h" />
     <ClInclude Include="DisegnaContenuti.h" />
     <ClInclude Include="InterazioniUtente.h" />
     <ClInclude Include="Nave.h" />

@@ -119,6 +119,6 @@ void InterazioniUtente::disegnaCampoEMessaggi(SDL_Texture* mareTexture, const st
     SDL_RenderClear(Campo::gRenderer);
     Campo::impostaSfondo(Campo::gRenderer);
     Campo::disegnaGriglia(Campo::CELL_SIZE, Campo::gRenderer, mareTexture);
-    DisegnaContenuti::scriviScritta("PIAZZA LA TUA NAVE", Campo::gRenderer);
+    DisegnaContenuti::scriviScritta("PIAZZA LA TUA NAVE", Campo::gRenderer, 600, 10, 200);
     SDL_RenderPresent(Campo::gRenderer);
 }

@@ -15,23 +15,8 @@ void SchermataIniziale::disegnaSfondo(SDL_Renderer* renderer, const char* imageP
     // Aggiorna la finestra
     SDL_RenderPresent(renderer);
 
-    SDL_Event event;
-    bool quit = false;
-
-    while (!quit) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = true;
-            }
-        }
-    }
-
     // Pulisce e rilascia le risorse
     SDL_DestroyTexture(backgroundImage);
     SDL_FreeSurface(imageSurface);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(gWindow);
-    SDL_Quit();
-    IMG_Quit();
 }
 
