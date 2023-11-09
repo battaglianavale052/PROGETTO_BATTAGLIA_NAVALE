@@ -47,9 +47,6 @@
     <ClInclude Include="Campo.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\SDL_image.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="Nave.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>

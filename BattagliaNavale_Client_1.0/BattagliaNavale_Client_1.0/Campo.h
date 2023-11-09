@@ -31,6 +31,7 @@ public:
     //DISEGNARE IL CAMPO E LE SUE COMPONENTI
         // Metodo per colorare la finestra di nero
         static void coloraFinestraDiNero(SDL_Renderer* renderer);
+        static void coloraFinestraDiBianco(SDL_Renderer* renderer);
         // Metodo per visualizzare il campo
         static void visualizzaCampo(SDL_Texture* mareTexture, const std::vector<Nave>& navi);
         // Metodo per disegnare la griglia

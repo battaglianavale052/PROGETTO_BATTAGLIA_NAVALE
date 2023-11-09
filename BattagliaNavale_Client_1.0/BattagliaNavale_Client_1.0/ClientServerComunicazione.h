@@ -19,5 +19,8 @@ public:
 	static bool sendString(int socket, const std::string& message);
 	static std::string Comunicazione();
 
+
+private:
+	static std::string nomeGiocatore;
 };
 

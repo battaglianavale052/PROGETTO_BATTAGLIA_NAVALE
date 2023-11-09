@@ -9,7 +9,7 @@
     #include "NaviVettore.h"
     #include "InterazioniUtente.h"
     #include "SchermataIniziale.h"
-
+    #include "ClientServerComunicazione.h"
 
 int main(int argc, char* args[]) {
     if (!Campo::initSDL()) {
@@ -19,15 +19,13 @@ int main(int argc, char* args[]) {
     
     std::vector<Nave> navi; // Vettore per contenere le navi
     std::vector<std::string> testiNave; //contiene il testo delle navi
-    DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv;InterazioniUtente Cinu; SchermataIniziale Csi;//oggetti di varie classi che verranno usate
+    DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv;
+    InterazioniUtente Ciu; SchermataIniziale Csi; ClientServerComunicazione Ccsc;//oggetti di varie classi che verranno usate
     
-   
+
+    //std::string var = Ccsc.Comunicazione();
     //SCHERMATA INZIALE
-    Cc.coloraFinestraDiNero(Cc.gRenderer);
-    Csi.disegnaSfondo(Campo::gRenderer, "img/1.jpg", Campo::gWindow);
-    Cdc.disegnaBottone(Cc.gRenderer, "img/2.bmp", Cc.SCREEN_WIDTH / 2 - 70, 400, 200, 200);
-    Cdc.scriviScritta("BATTAGLIA NAVALE", Cc.gRenderer, 400, 30, 300);SDL_RenderPresent(Cc.gRenderer);
-    while (Cdc.controlloClickBottone(680, 1080, 400, 600, 1) != 1){}
+    Csi.dialogoEnome();
 
 
     //INIZIO GIOCO
@@ -54,7 +52,7 @@ int main(int argc, char* args[]) {
 
         bool controllo = true;
         while (controllo) { //finchè la nave non viene ruotata nella direzione desiderata
-            int var = Cdc.controlloClickBottone(1120, 1250, 175, 310, 1, 1120, 1250, 380, 520, 2); //bottne gira o bottone salva
+            int var = Ciu.controlloClickBottone(1120, 1250, 175, 310, 1, 1120, 1250, 380, 520, 2); //bottne gira o bottone salva
             //SE IL GIOCATORE GIRA LA NAVE
             if (var == 1) {
                 if (navi[i].getOrientamento() == false) {
@@ -89,7 +87,7 @@ int main(int argc, char* args[]) {
             }
         }
         controllo = true;
-        Cinu.gestisciNave(&nave, mareTexture, navi, i);
+        Ciu.gestisciNave(&nave, mareTexture, navi, i);
         navi[i] = nave;
     }
 

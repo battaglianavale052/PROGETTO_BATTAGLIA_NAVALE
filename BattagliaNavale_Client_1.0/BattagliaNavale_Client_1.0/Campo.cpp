@@ -63,6 +63,21 @@ void Campo::coloraFinestraDiNero(SDL_Renderer* renderer) {
     // Aggiorna il renderer per rendere effettive le modifiche
     SDL_RenderPresent(renderer);
 }
+
+void Campo::coloraFinestraDiBianco(SDL_Renderer* renderer) {
+    // Imposta il colore del renderer a nero
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    // Crea un rettangolo che copre l'intera finestra
+    SDL_Rect schermoNero = { 0, 0, 1500, 600 }; // Assumi che larghezzaFinestra e altezzaFinestra siano le dimensioni della finestra
+
+    // Riempie l'intera finestra con il colore nero
+    SDL_RenderFillRect(renderer, &schermoNero);
+
+    // Aggiorna il renderer per rendere effettive le modifiche
+    SDL_RenderPresent(renderer);
+}
+
 void Campo::visualizzaCampo(SDL_Texture* mareTexture, const std::vector<Nave>& navi) {
     // Imposta lo sfondo
     impostaSfondo(gRenderer);

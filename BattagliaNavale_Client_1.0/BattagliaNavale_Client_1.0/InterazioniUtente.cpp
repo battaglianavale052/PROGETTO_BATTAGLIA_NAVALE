@@ -122,3 +122,120 @@ void InterazioniUtente::disegnaCampoEMessaggi(SDL_Texture* mareTexture, const st
     DisegnaContenuti::scriviScritta("PIAZZA LA TUA NAVE", Campo::gRenderer, 600, 10, 200);
     SDL_RenderPresent(Campo::gRenderer);
 }
+//-------------------------------------
+
+void InterazioniUtente::renderText(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, int x, int y) {
+    SDL_Color textColor = { 0, 0, 0 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+
+    if (textSurface == nullptr) {
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    int textWidth = textSurface->w;
+    int textHeight = textSurface->h;
+
+    SDL_Rect renderQuad = { x, y, textWidth, textHeight };
+    SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
+
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+std::string InterazioniUtente::LeggiTastiera(SDL_Renderer* renderer, TTF_Font* font) {
+    std::string inputText = "";
+    bool quit = false;
+
+    SDL_Event e;
+    SDL_StartTextInput();
+
+    // Prima di entrare nel ciclo, disegna i tuoi elementi iniziali
+    Campo::coloraFinestraDiBianco(renderer);
+    DisegnaContenuti::disegnaBottone(renderer, "img/capitano.bmp", Campo::SCREEN_WIDTH / 2 - 300, 200, 400, 400); //capitano
+    DisegnaContenuti::disegnaBottone(renderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
+    DisegnaContenuti::scriviScrittaPersonalizzata("INVIO per proseguire || BACK per cancellare lettere/numeri", Campo::gRenderer, 0, 0, 70, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
+    DisegnaContenuti::scriviScrittaPersonalizzata("Inserire il tuo", Campo::gRenderer, 230, 190, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
+    DisegnaContenuti::scriviScrittaPersonalizzata("nome capitano:", Campo::gRenderer, 230, 215, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
+    SDL_RenderPresent(renderer);
+
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+            else if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty()) {
+                    inputText.pop_back();
+                }
+                else if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_KP_ENTER) {
+                    quit = true;
+                }
+            }
+            else if (e.type == SDL_TEXTINPUT) {
+                inputText += e.text.text;
+            }
+        }
+
+       
+        // Disegna il testo inserito dall'utente
+        renderText(renderer, font, inputText, 10, 40);
+
+        SDL_RenderPresent(renderer);
+    }
+
+    SDL_StopTextInput();
+
+    return inputText;
+}
+
+int InterazioniUtente::controlloClickBottone(int x, int x1, int y, int y1, int var, int x_, int x1_, int y_, int y1_, int var_) {
+    SDL_Event e;
+    int mouseX, mouseY; // Dichiarare queste variabili per memorizzare le coordinate del clic
+
+    while (SDL_PollEvent(&e) != 0) {
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.button.button == SDL_BUTTON_LEFT) {
+                mouseX = e.button.x; // Coordinate X del clic
+                mouseY = e.button.y; // Coordinate Y del clic
+                // Ora puoi utilizzare mouseX e mouseY per determinare dove ha cliccato l'utente.
+
+                if (mouseX >= x && mouseX <= x1) {
+                    if (mouseY >= y && mouseY <= y1) {
+                        return var;
+                    }
+                }
+
+                if (mouseX >= x_ && mouseX <= x1_) {
+                    if (mouseY >= y_ && mouseY <= y1_) {
+                        return var_;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int InterazioniUtente::controlloClickBottone(int x, int x1, int y, int y1, int var) {
+    SDL_Event e;
+    int mouseX, mouseY; // Dichiarare queste variabili per memorizzare le coordinate del clic
+
+    while (SDL_PollEvent(&e) != 0) {
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.button.button == SDL_BUTTON_LEFT) {
+                mouseX = e.button.x; // Coordinate X del clic
+                mouseY = e.button.y; // Coordinate Y del clic
+                // Ora puoi utilizzare mouseX e mouseY per determinare dove ha cliccato l'utente.
+
+                if (mouseX >= x && mouseX <= x1) {
+                    if (mouseY >= y && mouseY <= y1) {
+                        return var;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
