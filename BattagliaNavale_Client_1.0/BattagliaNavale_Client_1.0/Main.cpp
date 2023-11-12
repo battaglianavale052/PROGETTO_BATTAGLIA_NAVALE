@@ -1,6 +1,10 @@
 //LIBRERIE
     #include <SDL.h>
     #include <cstdio>
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 //CLASSI
     #include "Campo.h"
@@ -87,8 +91,44 @@ int main(int argc, char* args[]) {
             }
         }
         controllo = true;
-        Ciu.gestisciNave(&nave, mareTexture, navi, i);
-        navi[i] = nave;
+        /*
+        
+posizionamento navi:
+	-client invia: "nave;lunghezza_nave;orientamento_nave;riga_nave;colonna_nave"
+	
+	-server invia 1 se la nave è stata pozionata in modo corretto dentro al campo, senza sovrapposzioni e 
+	 senza stare troppo vicino alle altre navi, 2 se la nave non è stata posizonata in modo corretto dentro il 
+	 campo
+     */
+        std::string str = "";
+        str = std::string("nave");
+        if (navi[i].getOrientamento() == false) {
+            str += (navi[i].getAltezza());
+            str += "v";
+        }
+        else{
+            str += (navi[i].getLarghezza());
+            str += "o";
+        }
+        str += Ciu.gestisciNave(&nave, mareTexture, navi, i);
+        if (Ccsc.Comunicazione(str) == "1") { //nave posizinata in modo corretto
+            //forse return va sopra navi[i] = nave;
+            navi[i] = nave;
+            return 0;
+        }
+        else {//nave NON posizinata in modo corretto
+            //CREA CAMPO, BOTTONI e SCRITTA
+            Cc.coloraFinestraDiNero(Cc.gRenderer);
+            Cc.visualizzaCampo(mareTexture, navi);
+            Cdc.disegnaBottone(Cc.gRenderer, "img/ruota.bmp", 1100, 150, 200, 200);
+            Cdc.disegnaBottone(Cc.gRenderer, "img/salva.bmp", 1100, 350, 200, 200);
+            Cdc.scriviScritta(testiNave[i], Cc.gRenderer, 600, 10, 200);
+            //Cnv.visualizzaVettore(navi, Cc.gRenderer);
+            for (int l = 0; l < i + 1; l++) {
+                Ctx.disegnaTextureNave(l, &navi[l], navi[l].getX(), navi[l].getY(), Cc.gRenderer); //disegna la texture della nave sulla nave  
+                SDL_RenderPresent(Cc.gRenderer);
+            }
+        }
     }
 
 

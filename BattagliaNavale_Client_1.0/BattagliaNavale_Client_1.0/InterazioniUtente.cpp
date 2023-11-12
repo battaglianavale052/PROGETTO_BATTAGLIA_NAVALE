@@ -1,6 +1,17 @@
 #include "InterazioniUtente.h"
 
-void InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave> navi, int i) {
+
+// Funzione per ottenere la stringa "riga, colonna" dalla posizione x e y
+std::string InterazioniUtente::ottieniCoordinateNave(int x, int y) {
+    // Calcola la riga e la colonna in base alla dimensione della cella
+    int riga = y / Campo::CELL_SIZE + 1;
+    int colonna = x / Campo::CELL_SIZE + 1;
+
+    // Converti le coordinate in una stringa nel formato desiderato
+    return std::to_string(riga) + ";" + std::to_string(colonna);
+}
+
+std::string  InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave> navi, int i) {
     SDL_RenderClear(Campo::gRenderer);
     bool staPosizionandoNave = false;
     bool esciDaNave = false;
@@ -18,6 +29,7 @@ void InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::
 
     // Rilascia la texture del buffer
     SDL_DestroyTexture(bufferTexture);
+    return ottieniCoordinateNave(x_,y_);
 }
 
 void InterazioniUtente::gestisciEventi(SDL_Event& evento, bool& staPosizionandoNave, bool& esciDaNave, int& x_, int& y_, Nave* nave) {
@@ -151,14 +163,12 @@ std::string InterazioniUtente::LeggiTastiera(SDL_Renderer* renderer, TTF_Font* f
     SDL_Event e;
     SDL_StartTextInput();
 
-    // Prima di entrare nel ciclo, disegna i tuoi elementi iniziali
-    Campo::coloraFinestraDiBianco(renderer);
-    DisegnaContenuti::disegnaBottone(renderer, "img/capitano.bmp", Campo::SCREEN_WIDTH / 2 - 300, 200, 400, 400); //capitano
+    DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow);
     DisegnaContenuti::disegnaBottone(renderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
-    DisegnaContenuti::scriviScrittaPersonalizzata("INVIO per proseguire || BACK per cancellare lettere/numeri", Campo::gRenderer, 0, 0, 70, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
-    DisegnaContenuti::scriviScrittaPersonalizzata("Inserire il tuo", Campo::gRenderer, 230, 190, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
-    DisegnaContenuti::scriviScrittaPersonalizzata("nome capitano:", Campo::gRenderer, 230, 215, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
-    SDL_RenderPresent(renderer);
+    DisegnaContenuti::scriviScrittaPersonalizzata("INVIO per proseguire || BACK per cancellare lettere/numeri", Campo::gRenderer, 0, 0, 70, 0, 0, 0);
+    DisegnaContenuti::scriviScrittaPersonalizzata("Inserire il tuo", Campo::gRenderer, 230, 190, 115, 0, 0, 0);
+    DisegnaContenuti::scriviScrittaPersonalizzata("nome capitano:", Campo::gRenderer, 230, 215, 115, 0, 0, 0);
+
 
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
@@ -168,6 +178,11 @@ std::string InterazioniUtente::LeggiTastiera(SDL_Renderer* renderer, TTF_Font* f
             else if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty()) {
                     inputText.pop_back();
+                    DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow); 
+                    DisegnaContenuti::disegnaBottone(renderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
+                    DisegnaContenuti::scriviScrittaPersonalizzata("INVIO per proseguire || BACK per cancellare lettere/numeri", Campo::gRenderer, 0, 0, 70, 0, 0, 0);
+                    DisegnaContenuti::scriviScrittaPersonalizzata("Inserire il tuo", Campo::gRenderer, 230, 190, 115, 0, 0, 0);
+                    DisegnaContenuti::scriviScrittaPersonalizzata("nome capitano:", Campo::gRenderer, 230, 215, 115, 0, 0, 0);
                 }
                 else if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_KP_ENTER) {
                     quit = true;
@@ -175,6 +190,11 @@ std::string InterazioniUtente::LeggiTastiera(SDL_Renderer* renderer, TTF_Font* f
             }
             else if (e.type == SDL_TEXTINPUT) {
                 inputText += e.text.text;
+                DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow); ;
+                DisegnaContenuti::disegnaBottone(renderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
+                DisegnaContenuti::scriviScrittaPersonalizzata("INVIO per proseguire || BACK per cancellare lettere/numeri", Campo::gRenderer, 0, 0, 70, 0, 0, 0);
+                DisegnaContenuti::scriviScrittaPersonalizzata("Inserire il tuo", Campo::gRenderer, 230, 190, 115, 0, 0, 0);
+                DisegnaContenuti::scriviScrittaPersonalizzata("nome capitano:", Campo::gRenderer, 230, 215, 115, 0, 0, 0);
             }
         }
 

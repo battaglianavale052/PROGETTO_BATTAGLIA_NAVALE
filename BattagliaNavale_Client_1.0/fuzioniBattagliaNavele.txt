@@ -1,10 +1,10 @@
 controllo schermata:
-	-client invia: 
+	-client invia: "pronto;String nomeGiocatore"
 	
 	-server invia ai client "1" quando entrambi i giocatori sono connessi
 
 posizionamento navi:
-	-client invia: 
+	-client invia: "nave;lunghezza_nave;orientamento_nave;riga_nave;colonna_nave"
 	
 	-server invia 1 se la nave è stata pozionata in modo corretto dentro al campo, senza sovrapposzioni e 
 	 senza stare troppo vicino alle altre navi, 2 se la nave non è stata posizonata in modo corretto dentro il 

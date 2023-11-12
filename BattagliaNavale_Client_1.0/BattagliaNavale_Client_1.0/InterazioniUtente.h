@@ -12,9 +12,11 @@ class InterazioniUtente
 {
 public: 
 
+    static std::string ottieniCoordinateNave(int x, int y);
+
     //CONTROLLO MOUSE UTENTE:
         //CONTROLLO POSIZIONAMENTO NAVI UTENTE
-        static void gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave> navi, int i);
+        static std::string  gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave> navi, int i);
         static void gestisciEventi(SDL_Event& evento, bool& staPosizionandoNave, bool& esciDaNave, int& x_, int& y_, Nave* nave);
         static void gestisciEventoMouseDown(SDL_Event& evento, bool& staPosizionandoNave, int& x_, int& y_, Nave* nave);
         static void gestisciEventoMouseMotion(SDL_Event& evento, bool& staPosizionandoNave, int& x_, int& y_, Nave* nave);

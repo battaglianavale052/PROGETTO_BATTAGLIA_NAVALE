@@ -8,7 +8,7 @@ std::string  ClientServerComunicazione::receiveString(int socket) {
         perror("Errore nella ricezione della stringa");
         return "";
     }
-    buffer[bytesRead] = '\0'; // Aggiungi il terminatore null
+    //buffer[bytesRead] = '\0'; // Aggiungi il terminatore null
     return std::string(buffer);
 }
 
@@ -22,7 +22,7 @@ bool ClientServerComunicazione::sendString(int socket, const std::string& messag
     return true;
 }
 
-std::string ClientServerComunicazione::Comunicazione() {
+std::string ClientServerComunicazione::Comunicazione(std::string str) {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         std::cerr << "Errore inizializzazione Winsock." << std::endl;
@@ -55,7 +55,7 @@ std::string ClientServerComunicazione::Comunicazione() {
     }
 
     // Invia una stringa al server
-    std::string messageToSend = "Ciao, server!";
+    std::string messageToSend = str;
     if (!sendString(clientSocket, messageToSend)) {
         std::cerr << "Errore nell'invio della stringa." << std::endl;
         closesocket(clientSocket);
@@ -65,7 +65,7 @@ std::string ClientServerComunicazione::Comunicazione() {
 
     // Ricevi una stringa dal server
     std::string receivedString = receiveString(clientSocket);
-    std::cout << "Ricevuto dal server: " << receivedString << std::endl;
+    //std::cout << "Ricevuto dal server: " << receivedString << std::endl;
 
     // Chiudi il socket utilizzando closesocket invece di close
     closesocket(clientSocket);

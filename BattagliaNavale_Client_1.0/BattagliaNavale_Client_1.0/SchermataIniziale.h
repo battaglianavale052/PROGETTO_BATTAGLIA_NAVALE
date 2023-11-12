@@ -5,12 +5,12 @@
 #include "Campo.h"
 #include "DisegnaContenuti.h"
 #include "InterazioniUtente.h"
+#include "ClientServerComunicazione.h"
 
 class SchermataIniziale
 {
 public:
 
-	static void disegnaSfondo(SDL_Renderer* renderer, const char* imagePath, SDL_Window* gWindow);
 	static void dialogoEnome();
 };
 

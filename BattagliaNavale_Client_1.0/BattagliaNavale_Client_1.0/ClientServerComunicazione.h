@@ -17,10 +17,10 @@ public:
 
 	static std::string receiveString(int socket);
 	static bool sendString(int socket, const std::string& message);
-	static std::string Comunicazione();
+	static std::string Comunicazione(std::string str);
 
 
-private:
+public:
 	static std::string nomeGiocatore;
 };
 

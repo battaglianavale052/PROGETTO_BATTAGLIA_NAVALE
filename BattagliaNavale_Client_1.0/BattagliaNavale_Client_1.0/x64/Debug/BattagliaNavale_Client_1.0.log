@@ -1,21 +1,9 @@
-﻿  Campo.cpp
-  ClientServerComunicazione.cpp
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(17,68): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(59,21): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(67,48): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
-  DisegnaContenuti.cpp
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\DisegnaContenuti.cpp(43,31): warning C4838: la conversione da 'int' a 'Uint8' richiede una conversione che supporta un minor numero di dati
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\DisegnaContenuti.cpp(43,38): warning C4838: la conversione da 'int' a 'Uint8' richiede una conversione che supporta un minor numero di dati
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\DisegnaContenuti.cpp(43,45): warning C4838: la conversione da 'int' a 'Uint8' richiede una conversione che supporta un minor numero di dati
-  InterazioniUtente.cpp
-  Main.cpp
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
-C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(23,77): warning C4101: 'Ccsc': variabile locale senza riferimenti
-  Nave.cpp
-  NaviVettore.cpp
+﻿  ClientServerComunicazione.cpp
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(17,68): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(59,21): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(67,48): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
   SchermataIniziale.cpp
-  Texture.cpp
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
   Generazione del codice in corso...
-  LINK : C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\x64\Debug\BattagliaNavale_Client_1.0.exe non trovato o non compilato dall'ultimo collegamento incrementale; verrà eseguito il collegamento completo
-  BattagliaNavale_Client_1.0.vcxproj -> C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\BattagliaNavale_Client_1.0\x64\Debug\BattagliaNavale_Client_1.0.exe
+  BattagliaNavale_Client_1.0.vcxproj -> C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\CLIENT 2\BattagliaNavale_Client_1.0\x64\Debug\BattagliaNavale_Client_1.0.exe
