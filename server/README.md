@@ -2,6 +2,6 @@
 
 ## Istruzioni per l'utilizzo
 
-- Item 1
+- Mod by Mottadelli
 - Item 2
 - Item 3
