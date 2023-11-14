@@ -6,7 +6,7 @@ public class Giocatore {
     private Campo campoGioco;
     private List<Nave> navi;
     private boolean pronto;
-    private static final int NUMERO_NAVI = 10;
+    private static final int NUMERO_NAVI = 5;
 
     public Giocatore(String nome, int dimensioneCampo) {
         this.nome = nome;

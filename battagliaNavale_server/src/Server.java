@@ -1,19 +1,31 @@
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Server extends Thread {
+public class Server {
     private Giocatore giocatore1;
     private Giocatore giocatore2;
     private Giocatore giocatoreCorrente;
+    private static Map<String, String> discoveryService = new HashMap<>();
 
     public Server() {
-        giocatore1 = new Giocatore("Giocatore1", 10);
-        giocatore2 = new Giocatore("Giocatore2", 10);
+        giocatore1 = new Giocatore("Giocatore1", 8);
+        giocatore2 = new Giocatore("Giocatore2", 8);
         giocatoreCorrente = giocatore1;
     }
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(666)) {
+
+            // ottengo l'ip del server
+            InetAddress serverAddress = InetAddress.getLocalHost();
+            String serverIP = serverAddress.getHostAddress();
+
+            // registra l'indirizzo ip del server sul servizio di discovery
+            registerServerIP(serverIP);
+
+
             System.out.println("Server in ascolto sulla porta 666");
 
             Socket clientSocket1 = serverSocket.accept();
@@ -51,6 +63,30 @@ public class Server extends Thread {
         }
     }
 
+    private static void registerServerIP(String serverIP) {
+        try {
+            URL url = new URL("http://localhost:3000/registerServerIP");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonInputString = "{ \"serverIP\": \"" + serverIP + "\" }";
+            connection.getOutputStream().write(jsonInputString.getBytes("UTF-8"));
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                System.out.println("Server IP registrato con successo.");
+            } else {
+                System.out.println("Errore durante la registrazione dell'IP del server. Codice di risposta: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void attesaProntoGiocatori(BufferedReader reader1, PrintWriter writer1, BufferedReader reader2,
             PrintWriter writer2) throws IOException {
         while (!giocatore1.prontoPerSparare() || !giocatore2.prontoPerSparare()) {
@@ -78,54 +114,59 @@ public class Server extends Thread {
     public void attesaPosizionamentoNavi(BufferedReader reader1, PrintWriter writer1, BufferedReader reader2,
             PrintWriter writer2) throws IOException {
 
-        while (!giocatore1.tutteLeNaviPosizionate()) {
+        GestioneThread ThreadGiocatore1 = new GestioneThread(giocatore1, reader1, writer1);
+        GestioneThread ThreadGiocatore2 = new GestioneThread(giocatore2, reader2, writer2);
 
-            String messaggio1 = reader1.readLine();
-            // string messaggio2 = reader2.readLine();
+        ThreadGiocatore1.start();
+        ThreadGiocatore2.start();
+        // while (!giocatore1.tutteLeNaviPosizionate()) {
 
-            if (messaggio1.startsWith("nave")) {
+        //     String messaggio1 = reader1.readLine();
+        //     // string messaggio2 = reader2.readLine();
 
-                String[] parti1 = messaggio1.split(";");
+        //     if (messaggio1.startsWith("nave")) {
 
-                // attributi navi giocatore 1
-                int lunghezza1 = Integer.parseInt(parti1[1]);
-                String orientamento1 = parti1[2];
-                int riga1 = Integer.parseInt(parti1[3]);
-                int colonna1 = Integer.parseInt(parti1[4]);
+        //         String[] parti1 = messaggio1.split(";");
 
-                // nave del giocatore 1
-                Nave nave1 = new Nave(lunghezza1, orientamento1, riga1, colonna1);
+        //         // attributi navi giocatore 1
+        //         int lunghezza1 = Integer.parseInt(parti1[1]);
+        //         String orientamento1 = parti1[2];
+        //         int riga1 = Integer.parseInt(parti1[3]);
+        //         int colonna1 = Integer.parseInt(parti1[4]);
 
-                if (giocatore1.getCampoGioco().posizionaNave(nave1, riga1, colonna1, orientamento1) == "1") {
-                    giocatore1.aggiungiNave(nave1);
-                    writer1.println("1");
-                } else if (giocatore1.getCampoGioco().posizionaNave(nave1, riga1, colonna1, orientamento1) == "2") {
-                    writer1.println("2");
-                }
+        //         // nave del giocatore 1
+        //         Nave nave1 = new Nave(lunghezza1, orientamento1, riga1, colonna1);
 
-            }
-        }
-        while (!giocatore2.tutteLeNaviPosizionate()) {
+        //         if (giocatore1.getCampoGioco().posizionaNave(nave1, riga1, colonna1, orientamento1) == "1") {
+        //             giocatore1.aggiungiNave(nave1);
+        //             writer1.println("1");
+        //         } else if (giocatore1.getCampoGioco().posizionaNave(nave1, riga1, colonna1, orientamento1) == "2") {
+        //             writer1.println("2");
+        //         }
 
-            String messaggio2 = reader2.readLine();
+        //     }
+        // }
+        // while (!giocatore2.tutteLeNaviPosizionate()) {
 
-            String[] parti2 = messaggio2.split(";");
-            // attributi navi giocatore 2
-            int lunghezza2 = Integer.parseInt(parti2[1]);
-            String orientamento2 = parti2[2];
-            int riga2 = Integer.parseInt(parti2[3]);
-            int colonna2 = Integer.parseInt(parti2[4]);
+        //     String messaggio2 = reader2.readLine();
 
-            // nave del giocatore 2
-            Nave nave2 = new Nave(lunghezza2, orientamento2, riga2, colonna2);
+        //     String[] parti2 = messaggio2.split(";");
+        //     // attributi navi giocatore 2
+        //     int lunghezza2 = Integer.parseInt(parti2[1]);
+        //     String orientamento2 = parti2[2];
+        //     int riga2 = Integer.parseInt(parti2[3]);
+        //     int colonna2 = Integer.parseInt(parti2[4]);
 
-            if (giocatore2.getCampoGioco().posizionaNave(nave2, riga2, colonna2, orientamento2) == "1") {
-                giocatore2.aggiungiNave(nave2);
-                writer2.println("1");
-            } else if (giocatore2.getCampoGioco().posizionaNave(nave2, riga2, colonna2, orientamento2) == "2") {
-                writer1.println("2");
-            }
-        }
+        //     // nave del giocatore 2
+        //     Nave nave2 = new Nave(lunghezza2, orientamento2, riga2, colonna2);
+
+        //     if (giocatore2.getCampoGioco().posizionaNave(nave2, riga2, colonna2, orientamento2) == "1") {
+        //         giocatore2.aggiungiNave(nave2);
+        //         writer2.println("1");
+        //     } else if (giocatore2.getCampoGioco().posizionaNave(nave2, riga2, colonna2, orientamento2) == "2") {
+        //         writer1.println("2");
+        //     }
+        // }
 
     }
 
