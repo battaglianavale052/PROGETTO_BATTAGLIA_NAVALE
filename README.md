@@ -2,5 +2,5 @@
 
 ## Struttura directory
 
-- server : contiene i file del server scritto in Java
-- BattagliaNavale_Client_1.0 : contiene i file del server scritto in C++
+- battagliaNavale_server : contiene i file del server scritto in Java
+- BattagliaNavale_Client_1.0 : contiene i file del client scritto in C++
