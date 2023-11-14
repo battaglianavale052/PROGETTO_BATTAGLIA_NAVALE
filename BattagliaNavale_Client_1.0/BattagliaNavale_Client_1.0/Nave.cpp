@@ -132,3 +132,10 @@ Nave Nave::creaNave(int i)
     Nave nave;
     return nave;
 }
+
+void Nave::modificaNave(Nave& nave, std::vector<Nave>& navi, int i) {
+    navi[i].setOrientamento(!nave.getOrientamento()); // Inverte l'orientamento
+    int temp = navi[i].getAltezza(); //se no l'altezza diventa la larghezza quando usata da setLarghezza
+    navi[i].setAltezza(navi[i].getLarghezza()); //imposto altezza la larghezza cosi che de verticale diventa orizzonatale
+    navi[i].setLarghezza(temp);//imposto larghezza la altezza cosi che de orizzonatale diventa verticale
+}

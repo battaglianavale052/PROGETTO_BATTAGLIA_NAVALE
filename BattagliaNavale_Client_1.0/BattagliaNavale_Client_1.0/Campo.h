@@ -6,6 +6,8 @@
     #include <vector>
     #include <string>
     #include "SDL_image.h"
+#include <iostream>
+#include <sstream>
 //CLASSI
     #include "Nave.h"
     #include "DisegnaContenuti.h"
@@ -38,5 +40,7 @@ public:
         static void disegnaGriglia(int CELL_SIZE, SDL_Renderer* gRenderer, SDL_Texture* mareTexture);
         // Metodo per impostare lo sfondo
         static void impostaSfondo(SDL_Renderer* gRenderer);
+
+        void cambiaTextureCella(const std::string& posizione, SDL_Texture* mareFuocoTexture);
 
 };

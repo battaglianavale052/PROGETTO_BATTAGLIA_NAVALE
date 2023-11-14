@@ -7,6 +7,10 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>>
 
+#include <vector>
+#include "Nave.h"
+#include "InterazioniUtente.h"
+
 // Aggiungi questa direttiva per collegare la libreria ws2_32.lib
 #pragma comment(lib, "ws2_32.lib")
 
@@ -15,9 +19,17 @@ class ClientServerComunicazione
 {
 public:
 
+	//INVIO e RICEZIONE
 	static std::string receiveString(int socket);
 	static bool sendString(int socket, const std::string& message);
-	static std::string Comunicazione(std::string str);
+	static SOCKET connectToServer();
+	static void closeConnection(SOCKET clientSocket);
+	static std::string sendAndReceiveString(SOCKET clientSocket, const std::string& message);
+
+	void mainFunction();
+
+	//CREAZIONE STRIGHE DA MANDARE AL SERVER
+	static std::string stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture);
 
 
 public:

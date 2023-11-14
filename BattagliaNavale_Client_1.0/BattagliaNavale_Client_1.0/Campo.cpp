@@ -99,12 +99,34 @@ void Campo::disegnaGriglia(int CELL_SIZE, SDL_Renderer* gRenderer, SDL_Texture* 
                 CELL_SIZE
             };
             SDL_RenderCopy(gRenderer, mareTexture, NULL, &cellRect);
-            //SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
-            SDL_RenderDrawRect(gRenderer, &cellRect);
+            SDL_RenderDrawRect(gRenderer, &cellRect); //serve a disegnare la griglia nera, cioè i bordi di ogni cella
         }
     }
 }
 
 void Campo::impostaSfondo(SDL_Renderer* gRenderer) {
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+}
+
+void Campo::cambiaTextureCella(const std::string& posizione, SDL_Texture* mareFuocoTexture) {
+    // Questa funzione cambia la texture di una cella specifica nella griglia
+    // Estrai la riga e la colonna dalla stringa
+    std::istringstream iss(posizione);
+    int riga, colonna;
+    char delimiter;
+    iss >> riga >> delimiter >> colonna;
+
+    // Verifica che la posizione sia valida
+    if (riga >= 0 && riga < CELL_SIZE && colonna >= 0 && colonna < CELL_SIZE) {
+        // Calcola la posizione della cella nella griglia
+        SDL_Rect cellRect = {
+            colonna * CELL_SIZE,
+            riga * CELL_SIZE,
+            CELL_SIZE,
+            CELL_SIZE
+        };
+
+        // Sostituisci la texture della cella con quella desiderata (mareFuocoTexture)
+        SDL_RenderCopy(gRenderer, mareFuocoTexture, NULL, &cellRect);
+    }
 }

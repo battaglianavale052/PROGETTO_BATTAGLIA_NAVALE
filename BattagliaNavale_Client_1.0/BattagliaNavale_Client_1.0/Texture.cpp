@@ -1,6 +1,7 @@
 #include "Texture.h"
 
 
+
 std::vector<SDL_Texture*> Texture::naveTexture;  // Inizializza il vettore statico
 
 
@@ -114,3 +115,9 @@ SDL_Texture* Texture::GetTextureVettore(int i)
     return naveTexture[i];
 }
 
+void Texture::disegnaVettoreTexture(int i, std::vector<Nave> navi) {
+    for (int l = 0; l < i + 1; l++) {
+        disegnaTextureNave(l, &navi[l], navi[l].getX(), navi[l].getY(), Campo::gRenderer); //disegna la texture della nave sulla nave  
+        SDL_RenderPresent(Campo::gRenderer);
+    }
+}

@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <string>
 #include "Nave.h"
+#include "Campo.h"
 class Texture
 {
 public: 
@@ -16,6 +17,8 @@ public:
 	static SDL_Texture* CaricaTextureMare(const char* path, SDL_Renderer* gRenderer);
 
 	static SDL_Texture* GetTextureVettore(int i);
+
+	void disegnaVettoreTexture(int i, std::vector<Nave> navi);
 
 
 private: 

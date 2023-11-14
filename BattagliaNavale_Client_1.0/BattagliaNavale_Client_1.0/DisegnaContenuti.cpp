@@ -1,5 +1,6 @@
 #pragma once
 #include "DisegnaContenuti.h"
+#include "Campo.h"
 
 
 void DisegnaContenuti::scriviScritta(std::string str, SDL_Renderer* gRenderer, int x, int y, int grandezza) {
@@ -137,6 +138,22 @@ void DisegnaContenuti::scriviScrittaGradualmente(SDL_Renderer* renderer, const s
     TTF_CloseFont(font);
 }
 
+void DisegnaContenuti::richiamoContenutiPosizionamentoNave(SDL_Texture* mareTexture, std::vector<Nave> navi, std::vector<std::string> testiNave, int i)
+{
+    //CREA CAMPO, BOTTONI e SCRITTA
+    Campo::coloraFinestraDiNero(Campo::gRenderer);
+    Campo::visualizzaCampo(mareTexture, navi);
+    disegnaBottone(Campo::gRenderer, "img/ruota.bmp", 1100, 150, 200, 200);
+    disegnaBottone(Campo::gRenderer, "img/salva.bmp", 1100, 350, 200, 200);
+    scriviScritta(testiNave[i], Campo::gRenderer, 600, 10, 200);
+}
+
+void DisegnaContenuti::richiamoContenutiFuoco(SDL_Texture* mareTexture, std::vector<Nave> navi)
+{
+    //CREA CAMPO, BOTTONI e SCRITTA
+    Campo::coloraFinestraDiNero(Campo::gRenderer);
+    Campo::visualizzaCampo(mareTexture, navi);
+}
 void DisegnaContenuti::disegnaSfondo(SDL_Renderer* renderer, const char* imagePath, SDL_Window* gWindow) {
 
     SDL_Surface* imageSurface = IMG_Load(imagePath);

@@ -1,5 +1,7 @@
 #include "ClientServerComunicazione.h"
 
+
+
 // Funzione per ricevere una stringa dal server
 std::string  ClientServerComunicazione::receiveString(int socket) {
     char buffer[1024]; // Buffer per la stringa ricevuta
@@ -22,54 +24,77 @@ bool ClientServerComunicazione::sendString(int socket, const std::string& messag
     return true;
 }
 
-std::string ClientServerComunicazione::Comunicazione(std::string str) {
+// Funzione per connettersi al server
+SOCKET ClientServerComunicazione::connectToServer() {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         std::cerr << "Errore inizializzazione Winsock." << std::endl;
-        return "Errore inizializzazione Winsock.";
+        return INVALID_SOCKET;
     }
 
     SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket == INVALID_SOCKET) {
         std::cerr << "Errore nella creazione del socket." << std::endl;
         WSACleanup();
-        return "Errore nella creazione del socket.";
+        return INVALID_SOCKET;
     }
 
-    // Indirizzo IP e porta del server
-    const char* serverIP = "127.0.0.1"; // Sostituisci con l'IP del tuo server
-    const int serverPort = 666; // Sostituisci con la porta del tuo server
+    // ... (rimane invariata)
 
-    // Configura l'indirizzo del server
-    sockaddr_in serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(serverPort);
-    inet_pton(AF_INET, serverIP, &serverAddr.sin_addr);
+    return clientSocket;
+}
 
-    // Connetti al server
-    if (connect(clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) == -1) {
-        std::cerr << "Errore nella connessione al server." << std::endl;
-        closesocket(clientSocket);
-        WSACleanup();
-        return "Errore nella connessione al server.";
-    }
+// Funzione per chiudere la connessione al server
+void ClientServerComunicazione::closeConnection(SOCKET clientSocket) {
+    closesocket(clientSocket);
+    WSACleanup();
+}
 
-    // Invia una stringa al server
-    std::string messageToSend = str;
-    if (!sendString(clientSocket, messageToSend)) {
+// Funzione per inviare una stringa al server e ricevere la risposta
+std::string ClientServerComunicazione::sendAndReceiveString(SOCKET clientSocket, const std::string& message) {
+    if (!sendString(clientSocket, message)) {
         std::cerr << "Errore nell'invio della stringa." << std::endl;
-        closesocket(clientSocket);
-        WSACleanup();
         return "Errore nell'invio della stringa.";
     }
 
     // Ricevi una stringa dal server
     std::string receivedString = receiveString(clientSocket);
-    //std::cout << "Ricevuto dal server: " << receivedString << std::endl;
-
-    // Chiudi il socket utilizzando closesocket invece di close
-    closesocket(clientSocket);
-    WSACleanup();
 
     return receivedString;
+}
+
+// Esempio di utilizzo nel tuo programma principale
+void ClientServerComunicazione::mainFunction() {
+    SOCKET clientSocket = connectToServer();
+
+    if (clientSocket != INVALID_SOCKET) {
+        // Prima stringa
+        std::string message1 = "Prima stringa";
+        std::string response1 = sendAndReceiveString(clientSocket, message1);
+        std::cout << "Ricevuto dal server: " << response1 << std::endl;
+
+        // Seconda stringa
+        std::string message2 = "Seconda stringa";
+        std::string response2 = sendAndReceiveString(clientSocket, message2);
+        std::cout << "Ricevuto dal server: " << response2 << std::endl;
+
+        // Chiudi la connessione
+        closeConnection(clientSocket);
+    }
+}
+
+std::string ClientServerComunicazione::stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture)
+{
+    std::string str = "";
+    str = std::string("nave");
+    if (navi[i].getOrientamento() == false) {
+        str += (navi[i].getAltezza());
+        str += "v";
+    }
+    else {
+        str += (navi[i].getLarghezza());
+        str += "o";
+    }
+    str += InterazioniUtente::gestisciNave(&nave, mareTexture, navi, i);
+    return str;
 }

@@ -1,17 +1,8 @@
 #include "InterazioniUtente.h"
 
 
-// Funzione per ottenere la stringa "riga, colonna" dalla posizione x e y
-std::string InterazioniUtente::ottieniCoordinateNave(int x, int y) {
-    // Calcola la riga e la colonna in base alla dimensione della cella
-    int riga = y / Campo::CELL_SIZE + 1;
-    int colonna = x / Campo::CELL_SIZE + 1;
 
-    // Converti le coordinate in una stringa nel formato desiderato
-    return std::to_string(riga) + ";" + std::to_string(colonna);
-}
-
-std::string  InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave> navi, int i) {
+std::string InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTexture, std::vector<Nave>& navi, int i) {
     SDL_RenderClear(Campo::gRenderer);
     bool staPosizionandoNave = false;
     bool esciDaNave = false;
@@ -24,13 +15,24 @@ std::string  InterazioniUtente::gestisciNave(Nave* nave, SDL_Texture* mareTextur
         // Gestisci gli eventi dell'utente
         gestisciEventi(evento, staPosizionandoNave, esciDaNave, x_, y_, nave);
         // Esegui il rendering sulla texture del buffer
-        rendiSuBuffer(bufferTexture, mareTexture, navi, i, nave);
+        rendiSuBuffer(bufferTexture, mareTexture, navi, i, nave, x_, y_);
     }
 
     // Rilascia la texture del buffer
     SDL_DestroyTexture(bufferTexture);
     return ottieniCoordinateNave(x_,y_);
 }
+
+// Funzione per ottenere la stringa "riga, colonna" dalla posizione x e y
+std::string InterazioniUtente::ottieniCoordinateNave(int x, int y) {
+    // Calcola la riga e la colonna in base alla dimensione della cella
+    int riga = y / Campo::CELL_SIZE + 1;
+    int colonna = x / Campo::CELL_SIZE + 1;
+
+    // Converti le coordinate in una stringa nel formato desiderato
+    return std::to_string(riga) + ";" + std::to_string(colonna);
+}
+
 
 void InterazioniUtente::gestisciEventi(SDL_Event& evento, bool& staPosizionandoNave, bool& esciDaNave, int& x_, int& y_, Nave* nave) {
     while (SDL_PollEvent(&evento) != 0) {
@@ -101,7 +103,7 @@ void InterazioniUtente::gestisciEventoMouseUp(SDL_Event& evento, bool staPosizio
     controllo++;
 }
 
-void InterazioniUtente::rendiSuBuffer(SDL_Texture* bufferTexture, SDL_Texture* mareTexture, const std::vector<Nave>& navi, int i, Nave* nave) {
+void InterazioniUtente::rendiSuBuffer(SDL_Texture* bufferTexture, SDL_Texture* mareTexture,  std::vector<Nave>& navi, int i, Nave* nave, int x_, int y_) {
     // Imposta la texture del buffer come destinazione per il rendering
     SDL_SetRenderTarget(Campo::gRenderer, bufferTexture);
     SDL_RenderClear(Campo::gRenderer);
@@ -110,6 +112,9 @@ void InterazioniUtente::rendiSuBuffer(SDL_Texture* bufferTexture, SDL_Texture* m
     disegnaCampoEMessaggi(mareTexture, navi, i);
     // Esegui il rendering delle navi
     disegnaNavi(navi, i, nave);
+
+    // Aggiorna la posizione della nave nel vettore navi
+    navi[i].setPosizione(x_, y_);
 
     // Ripristina il renderer come destinazione per il rendering
     SDL_SetRenderTarget(Campo::gRenderer, NULL);

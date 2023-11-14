@@ -32,6 +32,9 @@ public:
         void setOrientamento(bool orizzontale);
         // Restituisce l'orientamento corrente della nave
         bool getOrientamento() const;
+        static Nave* ConvertiInPuntatore(Nave& nave) {
+            return &nave;
+        }
 
     //CREAZIONI DI NAVI:
         // Metodo per creare una nave e aggiungerla al vettore di navi
@@ -39,6 +42,8 @@ public:
         // Metodo per creare una nave
         static Nave creaNave(int larghezza, int altezza, int x, int y);
         static Nave creaNave(int i);
+
+        void modificaNave(Nave& nave, std::vector<Nave>& navi, int i);
 
     //DISEGNARE LA NAVE:
         // Disegna la nave sul renderer

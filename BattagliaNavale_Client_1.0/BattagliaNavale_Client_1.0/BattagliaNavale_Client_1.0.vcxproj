@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Campo.cpp" />
+    <ClCompile Include="CampoBattaglia.cpp" />
     <ClCompile Include="ClientServerComunicazione.cpp" />
     <ClCompile Include="DisegnaContenuti.cpp" />
     <ClCompile Include="InterazioniUtente.cpp" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Campo.h" />
+    <ClInclude Include="CampoBattaglia.h" />
     <ClInclude Include="ClientServerComunicazione.h" />
     <ClInclude Include="DisegnaContenuti.h" />
     <ClInclude Include="InterazioniUtente.h" />

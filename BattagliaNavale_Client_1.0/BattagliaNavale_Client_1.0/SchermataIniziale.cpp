@@ -20,12 +20,12 @@ void SchermataIniziale::dialogoEnome()
 
     DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow);
     DisegnaContenuti::disegnaBottone(Campo::gRenderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
-    DisegnaContenuti::scriviScrittaPersonalizzata("Sono il generale", Campo::gRenderer, x, y1, 115, 0,0,0); SDL_RenderPresent(Campo::gRenderer);
+    DisegnaContenuti::scriviScrittaPersonalizzata("Sono il generale", Campo::gRenderer, x, y1, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
     DisegnaContenuti::scriviScrittaPersonalizzata("Adolfino", Campo::gRenderer, x, y2, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
     while (InterazioniUtente::controlloClickBottone(0, Campo::SCREEN_WIDTH, 0, Campo::SCREEN_HEIGHT, 1) != 1) {}
 
 
-    DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow); 
+    DisegnaContenuti::disegnaSfondo(Campo::gRenderer, "img/capitano.bmp", Campo::gWindow);
     DisegnaContenuti::disegnaBottone(Campo::gRenderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
     DisegnaContenuti::scriviScrittaPersonalizzata("Ora attacchimo", Campo::gRenderer, x, y1, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
     DisegnaContenuti::scriviScrittaPersonalizzata("una base nemica!", Campo::gRenderer, x, y2, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
@@ -39,10 +39,7 @@ void SchermataIniziale::dialogoEnome()
     DisegnaContenuti::disegnaBottone(Campo::gRenderer, "img/dialogo.bmp", Campo::SCREEN_WIDTH / 8, 30, 400, 400); //dialogo
     DisegnaContenuti::scriviScrittaPersonalizzata("BENVENUTO ", Campo::gRenderer, x, y1, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
     DisegnaContenuti::scriviScrittaPersonalizzata(nome + " !!!", Campo::gRenderer, x, y2, 115, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
+    while (InterazioniUtente::controlloClickBottone(0, Campo::SCREEN_WIDTH, 0, Campo::SCREEN_HEIGHT, 1) != 1) {}
     DisegnaContenuti::scriviScrittaPersonalizzata("in attesa di altri giocatori...", Campo::gRenderer, 0, 0, 200, 0, 0, 0); SDL_RenderPresent(Campo::gRenderer);
-   // while (InterazioniUtente::controlloClickBottone(0, Campo::SCREEN_WIDTH, 0, Campo::SCREEN_HEIGHT, 1) != 1) {}
-    //comunico col server e salvo il nome del giocatore
-    //std::string str = ClientServerComunicazione::Comunicazione("pronto;1"); 
-    //ClientServerComunicazione::nomeGiocatore = str;
 }
 
