@@ -16,8 +16,12 @@ public:
     static const int GRID_COLS = 8;
 
 public:
-    static void disegnaGriglia(SDL_Renderer* gRenderer, SDL_Texture* mareTexture);
-    static bool cellaCliccata[GRID_ROWS][GRID_COLS];
-    static bool gestisciInput(SDL_Event& e);
-    static std::string ottieniCellaCliccata(SDL_Event& e);
+
+    //disegnare il campo
+        static void disegnaGriglia(SDL_Renderer* gRenderer, SDL_Texture* mareTexture);
+
+    //controllo click del mouse
+        static bool cellaCliccata[GRID_ROWS][GRID_COLS];
+        static bool gestisciInput(SDL_Event& e);
+        static std::string ottieniCellaCliccata(SDL_Event& e);
 };

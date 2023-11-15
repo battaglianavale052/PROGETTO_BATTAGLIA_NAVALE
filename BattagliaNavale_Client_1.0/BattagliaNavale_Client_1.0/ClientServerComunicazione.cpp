@@ -38,12 +38,22 @@ SOCKET ClientServerComunicazione::connectToServer() {
         WSACleanup();
         return INVALID_SOCKET;
     }
+    const std::string SERVER_ADDRESS = "127.0.0.1"; // Indirizzo del server (localhost)
+    const int SERVER_PORT = 666;
+    sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(SERVER_PORT);
+    inet_pton(AF_INET, SERVER_ADDRESS.c_str(), &(serverAddr.sin_addr));
 
-    // ... (rimane invariata)
+    if (connect(clientSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR) {
+        std::cerr << "Errore nella connessione al server." << std::endl;
+        closesocket(clientSocket);
+        WSACleanup();
+        return INVALID_SOCKET;
+    }
 
     return clientSocket;
 }
-
 // Funzione per chiudere la connessione al server
 void ClientServerComunicazione::closeConnection(SOCKET clientSocket) {
     closesocket(clientSocket);
@@ -63,38 +73,19 @@ std::string ClientServerComunicazione::sendAndReceiveString(SOCKET clientSocket,
     return receivedString;
 }
 
-// Esempio di utilizzo nel tuo programma principale
-void ClientServerComunicazione::mainFunction() {
-    SOCKET clientSocket = connectToServer();
-
-    if (clientSocket != INVALID_SOCKET) {
-        // Prima stringa
-        std::string message1 = "Prima stringa";
-        std::string response1 = sendAndReceiveString(clientSocket, message1);
-        std::cout << "Ricevuto dal server: " << response1 << std::endl;
-
-        // Seconda stringa
-        std::string message2 = "Seconda stringa";
-        std::string response2 = sendAndReceiveString(clientSocket, message2);
-        std::cout << "Ricevuto dal server: " << response2 << std::endl;
-
-        // Chiudi la connessione
-        closeConnection(clientSocket);
-    }
-}
-
 std::string ClientServerComunicazione::stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture)
 {
-    std::string str = "";
-    str = std::string("nave");
+    std::stringstream ss;
+    ss << "nave";
+
     if (navi[i].getOrientamento() == false) {
-        str += (navi[i].getAltezza());
-        str += "v";
+        ss << navi[i].getAltezza() << "v";
     }
     else {
-        str += (navi[i].getLarghezza());
-        str += "o";
+        ss << navi[i].getLarghezza() << "o";
     }
-    str += InterazioniUtente::gestisciNave(&nave, mareTexture, navi, i);
-    return str;
+
+    ss << InterazioniUtente::gestisciNave(&nave, mareTexture, navi, i);
+
+    return ss.str();
 }

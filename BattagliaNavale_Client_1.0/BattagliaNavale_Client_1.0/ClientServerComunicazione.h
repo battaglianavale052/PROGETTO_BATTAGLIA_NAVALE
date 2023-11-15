@@ -19,16 +19,14 @@ class ClientServerComunicazione
 {
 public:
 
-	//INVIO e RICEZIONE
-	static std::string receiveString(int socket);
-	static bool sendString(int socket, const std::string& message);
-	static SOCKET connectToServer();
-	static void closeConnection(SOCKET clientSocket);
-	static std::string sendAndReceiveString(SOCKET clientSocket, const std::string& message);
+	//INVIO e/o RICEZIONE
+		static std::string receiveString(int socket);
+		static bool sendString(int socket, const std::string& message);
+		static SOCKET connectToServer();
+		static void closeConnection(SOCKET clientSocket);
+		static std::string sendAndReceiveString(SOCKET clientSocket, const std::string& message);
 
-	void mainFunction();
-
-	//CREAZIONE STRIGHE DA MANDARE AL SERVER
+	//creazione stringa per server 
 	static std::string stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture);
 
 

@@ -1,10 +1,10 @@
 //LIBRERIE
     #include <SDL.h>
     #include <cstdio>
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <string>
+    #include <iostream>
+    #include <sstream>
+    #include <vector>
+    #include <string>
 
 //CLASSI
     #include "Campo.h"
@@ -14,10 +14,10 @@
     #include "InterazioniUtente.h"
     #include "SchermataIniziale.h"
     #include "ClientServerComunicazione.h"
-#include "CampoBattaglia.h"
+    #include "CampoBattaglia.h"
 
 int main(int argc, char* args[]) {
-    if (!Campo::initSDL()) {
+    if (!Campo::initSDL()) { //libreria 
         printf("Failed to initialize SDL!");
         return -1;
     }
@@ -27,12 +27,16 @@ int main(int argc, char* args[]) {
     DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv; CampoBattaglia CcampoBattagl;
     InterazioniUtente CinterazUtente; SchermataIniziale Csi; ClientServerComunicazione client;//oggetti di varie classi che verranno usate
     SOCKET clientSocket = client.connectToServer(); //creo una connessione col server
+    if (clientSocket != INVALID_SOCKET) {
+        printf("errore socket");
+        return -666;
+    }
     SDL_Texture* mareTexture = Ctx.CaricaTextureMare("img/mare.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
     SDL_Texture* mareFuocoTexture = Ctx.CaricaTextureMare("img/mareFuoco1.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
 
     //SCHERMATA INZIALE E ATTESA CONNESSIONE 2 GIOCATORI
-   // Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
-   // client.sendAndReceiveString(clientSocket,"pronto;1"); //invio al server che il client è pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
+    Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
+    client.sendAndReceiveString(clientSocket,"pronto;2"); //invio al server che il client è pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
 
  
     //INIZIO GIOCO
@@ -62,84 +66,56 @@ int main(int argc, char* args[]) {
             if (var == 2) controllo = false;//se il giocatore salva la nave, quindi ha scelto l'orientamento
         }
         
-        std::string coordinte = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i);
-        //creo la stringa per il posizionamento della nave e invio al server
-        //se la nave va bene mantengo la posizione se la nave non va bene la faccio ripiazzare
-        /*
-        if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, mareTexture)) != "1") { //nave NON posizinata in modo corretto
+        std::string coordinte = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i); //stringa da mandare al server per controllo posizione nave
+        if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, mareTexture)) != "1") { //nave NON è posizinata in modo corretto
             Cdc.richiamoContenutiPosizionamentoNave(mareTexture, navi, testiNave, i); //creo sfondo e contenuti di "bellezza"
             Ctx.disegnaVettoreTexture(i, navi); //disegna le texture delle navi
-            i--;
+            i--; //siccome bisogna riposizionare la stessa nave
         }
-        coordinte += "";
-        Cdc.richiamoContenutiPosizionamentoNave(mareTexture, navi, testiNave, i); //creo sfondo e contenuti di "bellezza"
-        Ctx.disegnaVettoreTexture(i, navi); //disegna le texture delle navi
-        */
+        else { //posizione corretta
+            Cdc.richiamoContenutiPosizionamentoNave(mareTexture, navi, testiNave, i); //creo sfondo e contenuti di "bellezza"
+            Ctx.disegnaVettoreTexture(i, navi); //disegna le texture delle navi
+        }
     }
 
     Cdc.richiamoContenutiFuoco(mareTexture, navi); //disegna il campo e le navi, togliendo scritta e bottoni
     Ctx.disegnaVettoreTexture(5, navi); //disegna le texture delle navi
-    //CICLO DA FARE FINO ALLA FINE DEL GIOCO
 
-    //server per fare coso rosso
-    CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture);
-    SDL_RenderPresent(Campo::gRenderer);
-    SDL_Event e;
-    bool quit = false;
-    std::string coordinateSparo = "";
-    do {
-        while (SDL_PollEvent(&e) != 0) {
-            // Gestisci gli eventi di input
-            quit = CampoBattaglia::gestisciInput(e);
-            coordinateSparo = CampoBattaglia::ottieniCellaCliccata(e);
-        }
-    } while (!quit);
-    CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture);
-    SDL_RenderPresent(Campo::gRenderer);
+    std::string controlloFinePartita = "";
+    CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture); SDL_RenderPresent(Campo::gRenderer);
+    do { //finchè la partita non finisce...
+
+        SDL_Event e;
+        bool quit = false;
+        std::string coordinateSparo = "";
+        do { //finchè il giocatore non spara
+            while (SDL_PollEvent(&e) != 0) {
+                quit = CampoBattaglia::gestisciInput(e); //click mouse
+                coordinateSparo = CampoBattaglia::ottieniCellaCliccata(e); //coordinate sparo
+            }
+        } while (!quit);
+        CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture);//disegna il campoBattaglia che si aggiorna ogni volta che si spara
+
+        Cdc.scriviScritta("TUORNO AVVERSARIO: in attesa dell'avversario", Campo::gRenderer, 0, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
+        std::string coordinateAvversarie = client.sendAndReceiveString(clientSocket, coordinateSparo); //invio coordinate e aspetto coordiante avversarie
+        Cc.cambiaTextureCella(coordinateAvversarie, mareFuocoTexture);//disegno texture sparo ricevuto da avversario sul campo da gioco
+        CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture); SDL_RenderPresent(Campo::gRenderer);//disegna il campoBattaglia che si aggiorna quando riceve un colpo
+
+        controlloFinePartita = client.receiveString(clientSocket); //ricevo dal client se dati dell'avversario
+    } while (controlloFinePartita == "2"); //riceve 1 se il gicotore a vinto, 3 se perso, 2 se continua la partita
 
 
-    std::string coordinateAvversarie = client.sendAndReceiveString(clientSocket, coordinateSparo); //invio coordinate e aspetto coordiante avversarie
-    //al posto di 1;1 inserisco coordinateAvversarie
-    Cc.cambiaTextureCella("1;1", mareFuocoTexture); //
-    SDL_RenderPresent(Campo::gRenderer);
+    if (controlloFinePartita == "1") {
+        Cc.coloraFinestraDiNero(Campo::gRenderer);
+        Cdc.scriviScrittaPersonalizzata("HAI VINTO!!!", Campo::gRenderer, 400, 450, 150, 255, 0, 0);
+        int vinto = 0;
+    }
+    else {
+        Cc.coloraFinestraDiNero(Campo::gRenderer);
+        Cdc.scriviScrittaPersonalizzata("HAI PERSO!!!", Campo::gRenderer, 400, 450, 150, 255, 0, 0);
+        int perso = 0;
+    }
    
-    
-
-
-
-
-
-
-
-    
-    
-    
-    Campo::closeSDL();
+    Campo::closeSDL(); //chiusata libreria
     return 0;
 }
-
-/*
-controllo schermata:
--client invia: "pronto;String nomeGiocatore"
-
--server invia ai client "1" quando entrambi i giocatori sono connessi
-
-posizionamento navi:
--client invia: "nave;lunghezza_nave;orientamento_nave;riga_nave;colonna_nave" riga e colonna da 0 a 7
-
--server invia 1 se la nave è stata pozionata in modo corretto dentro al campo, senza sovrapposzioni e
-senza stare troppo vicino alle altre navi, 2 se la nave non è stata posizonata in modo corretto dentro il
-campo
-
-controllo coordinate sparo:
--client invia:due interi una riga e una colonna da 0 a 7. separate da ;. sparo;1;1
-
--server invia al client 1 se lo sparo è stato fatto in una casella gia fatta, quindi lo sparo è da rifare
-invia invece 2 se lo sparo va bene
-
-controllo vinto:
--client invia: non vuole ninte
-
--server invia al client 1 se il giocatore a vinto, 2 se il giocatore nessun giocatore non ha ancora vinto,
-3 se il giocatore ha perso*/
-
