@@ -26,7 +26,8 @@ public:
 		static void closeConnection(SOCKET clientSocket);
 		static std::string sendAndReceiveString(SOCKET clientSocket, const std::string& message);
 
-		std::string stringaPosizione(std::vector<Nave> navi, int i, Nave nave, std::string coordinate);
+	//creazione stringa per server 
+	static std::string stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture);
 
 
 public:

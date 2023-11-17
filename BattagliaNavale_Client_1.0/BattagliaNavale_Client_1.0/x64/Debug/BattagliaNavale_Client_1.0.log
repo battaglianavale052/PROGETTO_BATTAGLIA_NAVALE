@@ -1,7 +1,11 @@
-﻿  Main.cpp
-C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
-C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(39,26): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
-C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(104,53): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
-C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(28,57): warning C4101: 'Csi': variabile locale senza riferimenti
-C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(27,102): warning C4101: 'CcampoBattagl': variabile locale senza riferimenti
-  BattagliaNavale_Client_1.0.vcxproj -> C:\Users\Matteo\OneDrive\Documenti\scuola\informatica\client-server\PROGETTO_BATTAGLIA_NAVALE\BattagliaNavale_Client_1.0\x64\Debug\BattagliaNavale_Client_1.0.exe
+﻿  ClientServerComunicazione.cpp
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(19,68): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(65,21): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.cpp(71,48): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
+  Main.cpp
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\ClientServerComunicazione.h(8,10): warning C4067: token imprevisti dopo una direttiva per il preprocessore. Previsto un carattere di nuova riga
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(104,53): warning C4244: 'argomento': conversione da 'SOCKET' a 'int'. Possibile perdita di dati.
+C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\BattagliaNavale_Client_1.0\Main.cpp(27,102): warning C4101: 'CcampoBattagl': variabile locale senza riferimenti
+  Generazione del codice in corso...
+  BattagliaNavale_Client_1.0.vcxproj -> C:\Users\005do\Documents\COSE IMPORTANTI\GIOCO\progetto 2\CLIENT 2\BattagliaNavale_Client_1.0\x64\Debug\BattagliaNavale_Client_1.0.exe
