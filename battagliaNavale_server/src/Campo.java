@@ -17,7 +17,7 @@ public class Campo {
 
     public String posizionaNave(Nave nave, int riga, int colonna, String orientamento) {
         // verifica se la posizione iniziale è valida ovvero non è fuori dal campo
-        if (riga < 0 || colonna < 0 || riga >= celle.length || colonna >= celle.length) {
+        if (riga-1 < 0 || colonna-1 < 0 || riga-1 >= celle.length || colonna-1 >= celle.length) {
             return "2"; // La posizione non è valida
         }
 
@@ -27,41 +27,43 @@ public class Campo {
         }
 
         // orientamento orizzontale
-        if (orientamento == "o") {
+        if (orientamento.equals("o")) {
             // verifica se la nave può essere posizionata orizzontalmente
-            if (colonna + nave.getLunghezza() > celle.length) {
+            if (colonna - 1 + nave.getLunghezza() > celle.length) {
                 return "2"; // La nave non può essere posizionata qui
             }
 
             // verifica se la posizione è occupata da un'altra nave
             for (int i = 0; i < nave.getLunghezza(); i++) {
-                if (celle[riga][colonna + i].contieneNave()) {
+                if (celle[(riga-1)][(colonna-1) + i].contieneNave()) {
+                    System.out.println("Riga: " + riga + ", Colonna: " + (colonna + i));
                     return "2"; // Posizione occupata da un'altra nave
                 }
             }
 
             // posiziona la nave orizzontalmente
             for (int i = 0; i < nave.getLunghezza(); i++) {
-                celle[riga][colonna + i].setNave(nave);
+                celle[riga-1][(colonna-1) + i].setNave(nave);
             }
         }
         // orientamento verticale
-        else if (orientamento == "v") {
+        else if (orientamento.equals("v")) {
             // verifica se la nave può essere posizionata verticalmente
-            if (riga + nave.getLunghezza() > celle.length) {
+            if (riga - 1 + nave.getLunghezza() > celle.length) {
                 return "2"; // la nave non può essere posizionata qui
             }
 
             // verifica se la posizione è occupata da un'altra nave
             for (int i = 0; i < nave.getLunghezza(); i++) {
-                if (celle[riga + i][colonna].contieneNave()) {
+                if (celle[(riga-1) + i][(colonna-1)].contieneNave()) {
+                    System.out.println("Riga: " + (riga + i) + ", Colonna: " + colonna);
                     return "2"; // posizione occupata da un'altra nave
                 }
             }
 
             // posiziona la nave verticalmente
             for (int i = 0; i < nave.getLunghezza(); i++) {
-                celle[riga + i][colonna].setNave(nave);
+                celle[(riga-1) + i][(colonna-1)].setNave(nave);
             }
         }
         // orientamento non valido
@@ -78,8 +80,8 @@ public class Campo {
             // orientamento orizzontale
             for (int i = -1; i <= 1; i++) {
                 for (int j = 0; j < lunghezzaNave; j++) {
-                    int newRow = riga + i;
-                    int newCol = colonna + j;
+                    int newRow = (riga-1) + i;
+                    int newCol = (colonna-1) + j;
                     if (newRow >= 0 && newRow < celle.length && newCol >= 0 && newCol < celle.length) {
                         if (celle[newRow][newCol].contieneNave()) {
                             return true; // cè una nave adiacente
@@ -91,8 +93,8 @@ public class Campo {
             // orientamento verticale
             for (int i = -1; i <= 1; i++) {
                 for (int j = 0; j < lunghezzaNave; j++) {
-                    int newRow = riga + j;
-                    int newCol = colonna + i;
+                    int newRow = (riga-1) + j;
+                    int newCol = (colonna-1) + i;
                     if (newRow >= 0 && newRow < celle.length && newCol >= 0 && newCol < celle.length) {
                         if (celle[newRow][newCol].contieneNave()) {
                             return true; // cè una nave adiacente
@@ -108,20 +110,21 @@ public class Campo {
     // metodo per gestire gli spari
     public String sparo(int riga, int colonna) {
 
-        Cella cella = celle[riga][colonna];
+        Cella cella = celle[riga-1][colonna-1];
         if (cella.contieneNave()) {
-            cella.setAperta(true);
+            cella.colpisciCella();
             Nave naveColpita = cella.getNave();
             if (naveColpita.isAffondata()) {
                 // la nave è stata affondata
-                return "Nave affondata";
+                return "2;"+riga+";"+colonna;
             } else {
                 // la nave è stata colpita ma non affondata
-                return "Nave colpita";
+                return "1;"+riga+";"+colonna;
             }
+
         } else {
-            // nessuna nave è stata colpita
-            return "Nessuna nave colpita";
+            // acqua
+            return "0;"+riga+";"+colonna;
         }
     }
 
@@ -129,7 +132,7 @@ public class Campo {
         for (int i = 0; i < celle.length; i++) {
             for (int j = 0; j < celle[i].length; j++) {
                 Cella cella = celle[i][j];
-                if (cella.contieneNave() && !cella.getNave().isAffondata()) {
+                if (cella.contieneNave() && cella.getNave().isAffondata()==false) {
                     return false;
                 }
             }
@@ -140,7 +143,7 @@ public class Campo {
     // aggiorna il campo dell'avversario con l'esito dello sparo
     public void aggiornaCampoAvversario(int riga, int colonna, String esito) {
 
-        celle[riga][colonna].setEsitoSparo(esito);
+        celle[riga-1][colonna-1].setEsitoSparo(esito);
     }
 
 }
