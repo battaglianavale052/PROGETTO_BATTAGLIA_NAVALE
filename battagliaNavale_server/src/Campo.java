@@ -27,15 +27,16 @@ public class Campo {
         }
 
         // orientamento orizzontale
-        if (orientamento == "o") {
+        if (orientamento.equals("o")) {
             // verifica se la nave può essere posizionata orizzontalmente
-            if (colonna + nave.getLunghezza() > celle.length) {
+            if (colonna - 1 + nave.getLunghezza() > celle.length) {
                 return "2"; // La nave non può essere posizionata qui
             }
 
             // verifica se la posizione è occupata da un'altra nave
             for (int i = 0; i < nave.getLunghezza(); i++) {
                 if (celle[riga][colonna + i].contieneNave()) {
+                    System.out.println("Riga: " + riga + ", Colonna: " + (colonna + i));
                     return "2"; // Posizione occupata da un'altra nave
                 }
             }
@@ -46,15 +47,16 @@ public class Campo {
             }
         }
         // orientamento verticale
-        else if (orientamento == "v") {
+        else if (orientamento.equals("v")) {
             // verifica se la nave può essere posizionata verticalmente
-            if (riga + nave.getLunghezza() > celle.length) {
+            if (riga - 1 + nave.getLunghezza() > celle.length) {
                 return "2"; // la nave non può essere posizionata qui
             }
 
             // verifica se la posizione è occupata da un'altra nave
             for (int i = 0; i < nave.getLunghezza(); i++) {
                 if (celle[riga + i][colonna].contieneNave()) {
+                    System.out.println("Riga: " + (riga + i) + ", Colonna: " + colonna);
                     return "2"; // posizione occupata da un'altra nave
                 }
             }
@@ -112,16 +114,17 @@ public class Campo {
         if (cella.contieneNave()) {
             cella.setAperta(true);
             Nave naveColpita = cella.getNave();
-            if (naveColpita.isAffondata()) {
-                // la nave è stata affondata
-                return "Nave affondata";
-            } else {
-                // la nave è stata colpita ma non affondata
-                return "Nave colpita";
-            }
+            // if (naveColpita.isAffondata()) {
+            //     // la nave è stata affondata
+            //     return "Nave affondata";
+            // } else {
+            //     // la nave è stata colpita ma non affondata
+            //     return "Nave colpita";
+            // }
+            return "1;"+riga + ";" + colonna;
         } else {
             // nessuna nave è stata colpita
-            return "Nessuna nave colpita";
+            return "0;"+riga + ";" + colonna;
         }
     }
 
@@ -129,7 +132,7 @@ public class Campo {
         for (int i = 0; i < celle.length; i++) {
             for (int j = 0; j < celle[i].length; j++) {
                 Cella cella = celle[i][j];
-                if (cella.contieneNave() && !cella.getNave().isAffondata()) {
+                if (cella.contieneNave() && cella.getNave().isAffondata()==false) {
                     return false;
                 }
             }

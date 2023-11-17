@@ -36,7 +36,7 @@ public class GestioneThread extends Thread {
             if (messaggio1.startsWith("nave")) {
 
                 String[] parti1 = messaggio1.split(";");
-
+                System.out.println(messaggio1);
                 // attributi navi giocatore 1
                 int lunghezza1 = Integer.parseInt(parti1[1]);
                 String orientamento1 = parti1[2];

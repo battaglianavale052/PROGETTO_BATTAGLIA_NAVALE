@@ -27,7 +27,7 @@ int main(int argc, char* args[]) {
     DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv; CampoBattaglia CcampoBattagl;
     InterazioniUtente CinterazUtente; SchermataIniziale Csi; ClientServerComunicazione client;//oggetti di varie classi che verranno usate
     SOCKET clientSocket = client.connectToServer(); //creo una connessione col server
-    if (clientSocket != INVALID_SOCKET) {
+    if (clientSocket == INVALID_SOCKET) {
         printf("errore socket");
         return -666;
     }
@@ -35,13 +35,13 @@ int main(int argc, char* args[]) {
     SDL_Texture* mareFuocoTexture = Ctx.CaricaTextureMare("img/mareFuoco1.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
 
     //SCHERMATA INZIALE E ATTESA CONNESSIONE 2 GIOCATORI
-    Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
-    client.sendAndReceiveString(clientSocket,"pronto;2"); //invio al server che il client è pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
-
+    //Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
+    client.receiveString(clientSocket);
+    std::string vartemp = client.sendAndReceiveString(clientSocket, "pronto;2"); //invio al server che il client ï¿½ pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
  
     //INIZIO GIOCO
     Cnv.riempiVettoreTestoNave(testiNave); //riempio il vettore di testi delle navi
-    Cnv.riempiVettoreNaviTemporanee(navi); //servirà per modifiche future
+    Cnv.riempiVettoreNaviTemporanee(navi); //servirï¿½ per modifiche future
     for (int i = 0; i < 6; i++) { //ciclo per ogni nave per permettere di posizionare nave sul campo
         Cdc.richiamoContenutiPosizionamentoNave(mareTexture, navi, testiNave, i); //creo sfondo e contenuti di "bellezza"
        
@@ -49,14 +49,14 @@ int main(int argc, char* args[]) {
         Ctx.disegnaVettoreTexture(i, navi); //disegna le texture delle navi
      
         bool controllo = true;
-        while (controllo) { //finchè la nave non viene ruotata nella direzione desiderata
+        while (controllo) { //finchï¿½ la nave non viene ruotata nella direzione desiderata
             int var = CinterazUtente.controlloClickBottone(1120, 1250, 175, 310, 1, 1120, 1250, 380, 520, 2); //bottne gira o bottone salva
-            if (var == 1) { //se il giocatore gira la nave ed è verticale (getOrientamento = true = orizzontale)
+            if (var == 1) { //se il giocatore gira la nave ed ï¿½ verticale (getOrientamento = true = orizzontale)
                 if (navi[i].getOrientamento() == false) {
                    Cn.modificaNave(nave, navi, i);  //cambio altezza con larghezza, orientamento  
                    nave = navi[i]; 
                 }
-                else if (navi[i].getOrientamento() == true) { //se il giocatore gira la nave ed è verticale (getOrientamento = false = verticale)
+                else if (navi[i].getOrientamento() == true) { //se il giocatore gira la nave ed ï¿½ verticale (getOrientamento = false = verticale)
                     Cn.modificaNave(nave, navi, i); //cambio altezza con larghezza, orientamento  
                     nave = navi[i];
                 }
@@ -66,8 +66,8 @@ int main(int argc, char* args[]) {
             if (var == 2) controllo = false;//se il giocatore salva la nave, quindi ha scelto l'orientamento
         }
         
-        std::string coordinte = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i); //stringa da mandare al server per controllo posizione nave
-        if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, mareTexture)) != "1") { //nave NON è posizinata in modo corretto
+        std::string coordinate = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i); //stringa da mandare al server per controllo posizione nave
+        if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, coordinate)) != "1") { //nave NON ï¿½ posizinata in modo corretto
             Cdc.richiamoContenutiPosizionamentoNave(mareTexture, navi, testiNave, i); //creo sfondo e contenuti di "bellezza"
             Ctx.disegnaVettoreTexture(i, navi); //disegna le texture delle navi
             i--; //siccome bisogna riposizionare la stessa nave
@@ -83,12 +83,12 @@ int main(int argc, char* args[]) {
 
     std::string controlloFinePartita = "";
     CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture); SDL_RenderPresent(Campo::gRenderer);
-    do { //finchè la partita non finisce...
+    do { //finchï¿½ la partita non finisce...
 
         SDL_Event e;
         bool quit = false;
         std::string coordinateSparo = "";
-        do { //finchè il giocatore non spara
+        do { //finchï¿½ il giocatore non spara
             while (SDL_PollEvent(&e) != 0) {
                 quit = CampoBattaglia::gestisciInput(e); //click mouse
                 coordinateSparo = CampoBattaglia::ottieniCellaCliccata(e); //coordinate sparo

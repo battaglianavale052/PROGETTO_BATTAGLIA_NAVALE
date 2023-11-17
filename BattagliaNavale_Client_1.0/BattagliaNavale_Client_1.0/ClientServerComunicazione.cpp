@@ -3,20 +3,44 @@
 
 
 // Funzione per ricevere una stringa dal server
-std::string  ClientServerComunicazione::receiveString(int socket) {
+std::string ClientServerComunicazione::receiveString(int socket) {
     char buffer[1024]; // Buffer per la stringa ricevuta
     int bytesRead = recv(socket, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
         perror("Errore nella ricezione della stringa");
         return "";
     }
-    //buffer[bytesRead] = '\0'; // Aggiungi il terminatore null
+    buffer[bytesRead] = '\0'; // Aggiungi il terminatore null
+
+    // Rimuovi il carattere di ritorno a capo (\r\n) dalla fine della stringa
+    for (int i = bytesRead - 1; i >= 0; --i) {
+        if (buffer[i] == '\r' || buffer[i] == '\n') {
+            buffer[i] = '\0';
+        }
+        else {
+            break;
+        }
+    }
+
     return std::string(buffer);
 }
 
-// Funzione per inviare una stringa al server
+//// Funzione per inviare una stringa al server
+//bool ClientServerComunicazione::sendString(int socket, const std::string& message) {
+//    int bytesSent = send(socket, message.c_str(), message.size(), 0);
+//    if (bytesSent == -1) {
+//        perror("Errore nell'invio della stringa");
+//        return false;
+//    }
+//    return true;
+//}
+
 bool ClientServerComunicazione::sendString(int socket, const std::string& message) {
-    int bytesSent = send(socket, message.c_str(), message.size(), 0);
+    // Aggiungi un carattere di nuova riga alla fine del messaggio
+    std::string messageWithNewline = message + "\n";
+
+    // Invia la stringa al server
+    int bytesSent = send(socket, messageWithNewline.c_str(), messageWithNewline.size(), 0);
     if (bytesSent == -1) {
         perror("Errore nell'invio della stringa");
         return false;
@@ -73,19 +97,23 @@ std::string ClientServerComunicazione::sendAndReceiveString(SOCKET clientSocket,
     return receivedString;
 }
 
-std::string ClientServerComunicazione::stringaPosizione(std::vector<Nave> navi, int i, Nave nave, SDL_Texture* mareTexture)
+std::string ClientServerComunicazione::stringaPosizione(std::vector<Nave> navi, int i, Nave nave, std::string coordinate)
 {
     std::stringstream ss;
     ss << "nave";
 
-    if (navi[i].getOrientamento() == false) {
-        ss << navi[i].getAltezza() << "v";
+    if (navi[i].getOrientamento()) {
+        float lunghezzaNave = static_cast<float>(nave.getLarghezza()) / 70.0f;
+        ss << ";" << lunghezzaNave;
+        ss << ";" << "o";
+        ss << ";" << coordinate;
     }
     else {
-        ss << navi[i].getLarghezza() << "o";
+        float lunghezzaNave = static_cast<float>(nave.getAltezza()) / 70.0f;
+        ss << ";" << lunghezzaNave;
+        ss << ";" << "v";
+        ss << ";" << coordinate;
     }
-
-    ss << InterazioniUtente::gestisciNave(&nave, mareTexture, navi, i);
 
     return ss.str();
 }
