@@ -14,7 +14,7 @@ void CampoBattaglia::disegnaGriglia(SDL_Renderer* gRenderer, SDL_Texture* mareTe
 
             // Se la cella è stata cliccata, la disegna in rosso
             if (cellaCliccata[row][col]) {
-                SDL_SetRenderDrawColor(gRenderer, 0, 0, 255, 255); // Rosso
+                SDL_SetRenderDrawColor(gRenderer, 255, 0, 0, 255); // Rosso
                 SDL_RenderFillRect(gRenderer, &cellRect);
             }
             else {
@@ -23,24 +23,6 @@ void CampoBattaglia::disegnaGriglia(SDL_Renderer* gRenderer, SDL_Texture* mareTe
                 SDL_RenderDrawRect(gRenderer, &cellRect);
             }
         }
-    }
-}
-//-----------------------------------------------------------------------------------------
-void CampoBattaglia::disegnaGrigliaVerde(SDL_Renderer* gRenderer, int row, int col, int red, int green, int blue)
-{
-    // Calcola il rettangolo per la cella
-    SDL_Rect cellRect = {
-        col * CELL_SIZE + GRID_OFFSET_X,
-        row * CELL_SIZE + GRID_OFFSET_Y,
-        CELL_SIZE,
-        CELL_SIZE
-    };
-
-    //per fare in modo che non venga didisegnata di blu dopo
-    cellaCliccata[row][col] = true;
-    if (cellaCliccata[row][col]) {
-        SDL_SetRenderDrawColor(gRenderer, red, green, blue, 255); // Rosso
-        SDL_RenderFillRect(gRenderer, &cellRect);
     }
 }
 

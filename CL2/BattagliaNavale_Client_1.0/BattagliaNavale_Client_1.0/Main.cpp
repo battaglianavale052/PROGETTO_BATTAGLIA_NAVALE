@@ -32,7 +32,7 @@ int main(int argc, char* args[]) {
     SDL_Texture* mareFuocoTexture = Ctx.CaricaTextureMare("img/mareFuoco1.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
 
     //SCHERMATA INZIALE E ATTESA CONNESSIONE 2 GIOCATORI
-   Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
+    Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
 
     client.receiveString(clientSocket);
     std::string vartemp = client.sendAndReceiveString(clientSocket, "pronto;2"); //invio al server che il client � pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
@@ -58,6 +58,7 @@ int main(int argc, char* args[]) {
             if (var == 2) controllo = false;//se il giocatore salva la nave, quindi ha scelto l'orientamento
         }
 
+
         std::string coordinate = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i); //stringa da mandare al server per controllo posizione nave
         if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, coordinate)) != "1") { //nave NON � posizinata in modo corretto
             Nave nave2 = Cn.creaNave(i);
@@ -79,10 +80,10 @@ int main(int argc, char* args[]) {
     do { //finch� la partita non finisce...
 
         std::string coordinateAvversarie = "10;10";
-        std::string coordinateSparo = "";
         do {
             SDL_Event e;
             bool quit = false;
+            std::string coordinateSparo = "";
             do { //finch� il giocatore non spara
                 while (SDL_PollEvent(&e) != 0) {
                     quit = CampoBattaglia::gestisciInput(e); //click mouse
@@ -104,19 +105,9 @@ int main(int argc, char* args[]) {
         }
         else if (primoNumero == '2') { //nave colpita
             Cdc.scriviScritta("nave colpita", Campo::gRenderer, 900, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
-            int row, col;  std::istringstream ss(coordinateSparo);
-            char delimiter; // Carattere delimitatore (;)
-            ss >> row >> delimiter >> col;
-            CampoBattaglia::disegnaGrigliaVerde(Campo::gRenderer, row, col, 0, 255, 0); 
-            SDL_RenderPresent(Campo::gRenderer);
         }
         else if (primoNumero == '3') {//nave affondata
             Cdc.scriviScritta("nave affondata", Campo::gRenderer, 900, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
-            int row, col;  std::istringstream ss(coordinateSparo);
-            char delimiter; // Carattere delimitatore (;)
-            ss >> row >> delimiter >> col;
-            CampoBattaglia::disegnaGrigliaVerde(Campo::gRenderer, row, col, 255, 255, 0); 
-            SDL_RenderPresent(Campo::gRenderer);
         }
         coordinateAvversarie = coordinateAvversarie.substr(2);// Rimozione del primo numero e del punto e virgola
 

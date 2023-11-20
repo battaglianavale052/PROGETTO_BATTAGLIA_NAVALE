@@ -27,13 +27,13 @@ int main(int argc, char* args[]) {
     DisegnaContenuti Cdc; Campo Cc;Nave Cn;Texture Ctx(Cc.gRenderer);NaviVettore Cnv; CampoBattaglia CcampoBattagl;
     InterazioniUtente CinterazUtente; SchermataIniziale Csi; ClientServerComunicazione client;//oggetti di varie classi che verranno usate
     SOCKET clientSocket = client.connectToServer(); //creo una connessione col server
-
+   
     SDL_Texture* mareTexture = Ctx.CaricaTextureMare("img/mare.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
     SDL_Texture* mareFuocoTexture = Ctx.CaricaTextureMare("img/mareFuoco1.bmp", Cc.gRenderer); //crea la texture del mare come sfondo delle celle
 
     //SCHERMATA INZIALE E ATTESA CONNESSIONE 2 GIOCATORI
-   Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
-
+    Csi.dialogoEnome();  //creo le schermate iniziali per l'inserimento del nome e l'inizio del gioco
+    
     client.receiveString(clientSocket);
     std::string vartemp = client.sendAndReceiveString(clientSocket, "pronto;2"); //invio al server che il client � pronto per giocare e aspetto la ricezione che mi conferma che entrambi i giocatori si sono connessi
 
@@ -57,6 +57,7 @@ int main(int argc, char* args[]) {
             }
             if (var == 2) controllo = false;//se il giocatore salva la nave, quindi ha scelto l'orientamento
         }
+        
 
         std::string coordinate = CinterazUtente.gestisciNave(Nave::ConvertiInPuntatore(nave), mareTexture, navi, i); //stringa da mandare al server per controllo posizione nave
         if (client.sendAndReceiveString(clientSocket, client.stringaPosizione(navi, i, nave, coordinate)) != "1") { //nave NON � posizinata in modo corretto
@@ -68,7 +69,7 @@ int main(int argc, char* args[]) {
             i--;
         }
     }
-
+    
     Cdc.richiamoContenutiFuoco(mareTexture, navi); //disegna il campo e le navi, togliendo scritta e bottoni
     Ctx.disegnaVettoreTexture(5, navi); //disegna le texture delle navi
     Cdc.scriviScritta("TUORNO AVVERSARIO: in attesa dell'avversario", Campo::gRenderer, 0, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
@@ -79,21 +80,21 @@ int main(int argc, char* args[]) {
     do { //finch� la partita non finisce...
 
         std::string coordinateAvversarie = "10;10";
-        std::string coordinateSparo = "";
         do {
-            SDL_Event e;
-            bool quit = false;
-            do { //finch� il giocatore non spara
-                while (SDL_PollEvent(&e) != 0) {
-                    quit = CampoBattaglia::gestisciInput(e); //click mouse
-                    coordinateSparo = CampoBattaglia::ottieniCellaCliccata(e); //coordinate sparo
-                }
-            } while (!quit);
-            Cdc.rettangoloNero(Campo::gRenderer);
-            CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture);//disegna il campoBattaglia che si aggiorna ogni volta che si spara
-            Cdc.scriviScritta("TUORNO AVVERSARIO: in attesa dell'avversario", Campo::gRenderer, 0, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
-
-            coordinateAvversarie = client.sendAndReceiveString(clientSocket, coordinateSparo); //invio coordinate e aspetto coordiante avversarie
+        SDL_Event e;
+        bool quit = false;
+        std::string coordinateSparo = "";
+        do { //finch� il giocatore non spara
+            while (SDL_PollEvent(&e) != 0) {
+                quit = CampoBattaglia::gestisciInput(e); //click mouse
+                coordinateSparo = CampoBattaglia::ottieniCellaCliccata(e); //coordinate sparo
+            }
+        } while (!quit);
+        Cdc.rettangoloNero(Campo::gRenderer);
+        CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture);//disegna il campoBattaglia che si aggiorna ogni volta che si spara
+        Cdc.scriviScritta("TUORNO AVVERSARIO: in attesa dell'avversario", Campo::gRenderer, 0, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
+        
+        coordinateAvversarie = client.sendAndReceiveString(clientSocket, coordinateSparo); //invio coordinate e aspetto coordiante avversarie
         } while (coordinateAvversarie == "10;10");
 
         Cdc.rettangoloNero(Campo::gRenderer);
@@ -104,25 +105,15 @@ int main(int argc, char* args[]) {
         }
         else if (primoNumero == '2') { //nave colpita
             Cdc.scriviScritta("nave colpita", Campo::gRenderer, 900, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
-            int row, col;  std::istringstream ss(coordinateSparo);
-            char delimiter; // Carattere delimitatore (;)
-            ss >> row >> delimiter >> col;
-            CampoBattaglia::disegnaGrigliaVerde(Campo::gRenderer, row, col, 0, 255, 0); 
-            SDL_RenderPresent(Campo::gRenderer);
         }
         else if (primoNumero == '3') {//nave affondata
             Cdc.scriviScritta("nave affondata", Campo::gRenderer, 900, 570, 90);  SDL_RenderPresent(Campo::gRenderer);//scritta attesa avversario
-            int row, col;  std::istringstream ss(coordinateSparo);
-            char delimiter; // Carattere delimitatore (;)
-            ss >> row >> delimiter >> col;
-            CampoBattaglia::disegnaGrigliaVerde(Campo::gRenderer, row, col, 255, 255, 0); 
-            SDL_RenderPresent(Campo::gRenderer);
-        }
+        }    
         coordinateAvversarie = coordinateAvversarie.substr(2);// Rimozione del primo numero e del punto e virgola
 
         Cc.cambiaTextureCella(coordinateAvversarie, mareFuocoTexture);//disegno texture sparo ricevuto da avversario sul campo da gioco
         CampoBattaglia::disegnaGriglia(Campo::gRenderer, mareTexture); SDL_RenderPresent(Campo::gRenderer);//disegna il campoBattaglia che si aggiorna quando riceve un colpo
-
+       
         controlloFinePartita = client.receiveString(clientSocket); //ricevo dal client se dati dell'avversario
     } while (controlloFinePartita == "2"); //riceve 1 se il gicotore a vinto, 3 se perso, 2 se continua la partita
 

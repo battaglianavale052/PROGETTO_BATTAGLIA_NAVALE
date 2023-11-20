@@ -18,11 +18,8 @@ public:
 public:
     // Metodi per disegnare il campo e gestire l'input
 
-    // Metodo per disegnare la griglia e casella rossa
+    // Metodo per disegnare la griglia
     static void disegnaGriglia(SDL_Renderer* gRenderer, SDL_Texture* mareTexture);
-
-    // Metodo per disegnare la griglia e casella verde o un'altro colore 
-    static void disegnaGrigliaVerde(SDL_Renderer* gRenderer, int row, int col, int _1, int _2, int _3);
 
     // Variabili per il controllo del clic del mouse su ciascuna cella
     static bool cellaCliccata[GRID_ROWS][GRID_COLS];

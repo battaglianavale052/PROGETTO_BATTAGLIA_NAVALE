@@ -4,7 +4,6 @@
 
 // Funzione per ricevere una stringa dal server
 std::string ClientServerComunicazione::receiveString(int socket) {
-    Sleep(10); //da tempo al server di inviare al client il messaggio
     char buffer[1024]; // Buffer per la stringa ricevuta
     int bytesRead = recv(socket, buffer, sizeof(buffer), 0);
     if (bytesRead == -1) {
@@ -63,7 +62,7 @@ SOCKET ClientServerComunicazione::connectToServer() {
         WSACleanup();
         return INVALID_SOCKET;
     }
-    const std::string SERVER_ADDRESS = "172.16.102.123"; // Indirizzo del server (localhost)
+    const std::string SERVER_ADDRESS = "127.0.0.1"; // Indirizzo del server (localhost)
     const int SERVER_PORT = 666;
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;

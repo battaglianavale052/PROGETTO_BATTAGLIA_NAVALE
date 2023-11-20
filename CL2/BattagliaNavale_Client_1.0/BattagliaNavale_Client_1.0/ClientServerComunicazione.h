@@ -31,8 +31,6 @@ public:
     static SOCKET connectToServer();
 
     // Chiusura della connessione del client
-    //SE SI VUOLE USARE UN CLIENT SU UN'ALTRO PC MODIFICARE IP INSERENDO IP COMUPER 
-    //SE SI VUOLE USARE IL CLIERT SULLO STESSO PC USARE LOCAL HOST
     static void closeConnection(SOCKET clientSocket);
 
     // Invia una stringa e ricevi una risposta dal server
@@ -41,4 +39,7 @@ public:
     // Metodo per ottenere una stringa di posizione da un vettore di navi
     std::string stringaPosizione(std::vector<Nave> navi, int i, Nave nave, std::string coordinate);
 
+public:
+    // Nome del giocatore
+    static std::string nomeGiocatore;
 };
