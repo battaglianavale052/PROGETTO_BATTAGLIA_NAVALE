@@ -14,7 +14,7 @@
 - Aprire con VSC o VS le cartelle "CL1" e "CL2" ed avviare i client c++ (scaricare le opportune estensioni per eseguire file .cpp e .h)
 
 > [!IMPORTANT]
-> Avviare prima il server e poi i client
-> Prima di avviare il server, assicurarsi che entrambi i client siano connessi all'indirizzo ip del pc con il server.
-> Per farlo, basta modificare l'indirizzo ip presente nella classe "ClientServerComunicazione.cpp" nel client 
-> Le cartelle "CL1" e "CL2" contengono già le librerie SDL (per la grafica)
+> Avviare prima il server e poi i client.     
+>    Prima di avviare il server, assicurarsi che entrambi i client siano connessi all'indirizzo ip del pc con il server.    
+>    Per farlo, basta modificare l'indirizzo ip presente nella classe "ClientServerComunicazione.cpp" nel client.
+>    Le cartelle "CL1" e "CL2" contengono già le librerie SDL (per la grafica).
